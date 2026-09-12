@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import { db } from "@/db/client";
 import { racers } from "@/db/schema";
 import { inferIsMinor } from "@/lib/minors";
+import { logEvent, ANALYTICS_EVENTS } from "@/lib/analytics/events";
 
 function splitName(fullName: string): { firstName: string; lastName: string } {
   const parts = fullName.trim().split(/\s+/);
@@ -51,6 +52,8 @@ export async function createGhostRacer(params: {
       isFictionalDemo: false,
     })
     .returning();
+
+  await logEvent(ANALYTICS_EVENTS.GHOST_PROFILE_CREATED, { racerId: racer.id, trackId: params.trackId });
 
   return racer;
 }

@@ -3,6 +3,7 @@ import { db } from "@/db/client";
 import { events, ingestBatches, raceSessions, results } from "@/db/schema";
 import { createGhostRacer } from "./ghostRacer";
 import { recomputeAllRatings } from "@/lib/ratings/recompute";
+import { logEvent, ANALYTICS_EVENTS } from "@/lib/analytics/events";
 
 export interface PublishDecision {
   resultId: string;
@@ -68,6 +69,8 @@ export async function publishIngestBatch(batchId: string, decisions: PublishDeci
       .update(results)
       .set({ racerId, publishedAt: new Date() })
       .where(eq(results.id, decision.resultId));
+
+    await logEvent(ANALYTICS_EVENTS.RESULTS_PUBLISHED, { racerId, trackId: row.trackId, metadata: { resultId: decision.resultId } });
   }
 
   await db.update(ingestBatches).set({ status: "published" }).where(eq(ingestBatches.id, batchId));

@@ -37,6 +37,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local dev image-upload stub storage (lib/storage/local.ts) — never real
+# production storage, see REVIEW.md
+/public/uploads/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

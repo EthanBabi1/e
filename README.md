@@ -58,10 +58,21 @@ No row becomes visible on a public page, a leaderboard, or a rating until it's c
 
 Export a racer's full record any time: `GET /api/export/:racerId/csv` and `/pdf`.
 
+## Public surface (Phase 3)
+
+- `/racers/[slug]` — racer profile: hero, story, storefront (display-only zones), rating (hidden while provisional), form guide, record table, telemetry chart. Renders correctly at empty/sparse/full density.
+- `/tracks/[slug]`, `/races/[id]` — track page and single-race results, both with structured data (JSON-LD).
+- `/leaderboards`, `/marketplace`, `/search` — leaderboards (provisional/self-reported always excluded), zone marketplace, typo-tolerant site search.
+- `/demo` — the one fully populated fictional racer (`demo-jordan-vance`), rendered through the exact same components as a real profile.
+- `/api/og/racer/[slug]` — share card images (never generated for an unclaimed minor).
+- `/sitemap.xml`, `/robots.txt` — sitemap excludes every noindexed (unclaimed-minor) profile.
+- `/admin/metrics` — funnel dashboard (unauthenticated dev route — see caveat above for `/admin`).
+
 ## Full setup (filled in as each phase lands)
 
 - **Database / migrations / seed** — done, Phase 1 (above).
 - **Results ingest** — done, Phase 2 (above).
+- **Public surface** — done, Phase 3 (above).
 - **Auth / accounts** — added in Phase 4.
 - **Stripe webhook forwarding** — added in Phase 5.
 - **Cron jobs** — added in Phase 5/6.

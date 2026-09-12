@@ -9,3 +9,5 @@ export * from "./series";
 export * from "./claims";
 export * from "./ratings";
 export * from "./ingest";
+export * from "./zones";
+export * from "./analytics";

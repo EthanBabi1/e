@@ -2,6 +2,7 @@ import { db } from "@/db/client";
 import {
   users, guardians, guardianRacers, tracks, racers, transponders,
   transponderAssignments, events, raceSessions, results, laps, series, claims,
+  zones, zoneListings,
 } from "@/db/schema";
 import { CLASSES, FIRST_NAMES, LAST_NAMES } from "./data";
 import { mulberry32, pick, randInt } from "./rng";
@@ -25,6 +26,166 @@ function generateLaps(numLaps: number, baseMs: number, skillMs: number): number[
     out.push(Math.max(baseMs - 3000, lap));
   }
   return out;
+}
+
+const DEMO_CLASS = "Senior Sportsman";
+const DEMO_BASE_LAP_MS = 34000;
+
+/**
+ * Section 1: "Ship a /demo route with one fully populated fictional
+ * racer, for showing tracks and sponsors what a finished profile looks
+ * like before any real one exists." This racer gets enough race results
+ * to clear the rating-provisional threshold (section 8) deliberately —
+ * the point is to show the settled, full-density version of a profile,
+ * which the rest of the season's realistic sparse data intentionally
+ * doesn't produce on its own (see DECISIONS.md).
+ */
+async function createDemoRacer(track: typeof tracks.$inferSelect) {
+  const [demoUser] = await db
+    .insert(users)
+    .values({ name: "Jordan Vance (fictional demo)", email: "demo.jordan.vance@seed.example", role: "racer" })
+    .returning();
+
+  const dob = new Date();
+  dob.setFullYear(dob.getFullYear() - 24);
+
+  const [demoRacer] = await db
+    .insert(racers)
+    .values({
+      slug: "demo-jordan-vance",
+      userId: demoUser.id,
+      firstName: "Jordan",
+      lastName: "Vance",
+      dob: dob.toISOString().slice(0, 10),
+      isMinor: false,
+      numberDefault: "17",
+      classDefault: DEMO_CLASS,
+      homeTrackId: track.id,
+      town: "Millhaven",
+      bio: "Fictional demo profile. Racing out of Millhaven for six seasons, currently chasing the regional Senior Sportsman title.",
+      story:
+        "This is a fictional demo profile built to show what a finished Podium Row page looks like. \"I started karting because my dad raced here in the 90s — now I'm trying to get my own name on that wall of track records.\"",
+      socialFollowingSelfReported: 1840,
+      trackdayAttendanceSelfReported: 22,
+      claimStatus: "claimed",
+      isFictionalDemo: true,
+    })
+    .returning();
+
+  await db.insert(claims).values({ racerId: demoRacer.id, claimedByUserId: demoUser.id, verifiedVia: "email", isGuardianClaim: false });
+
+  const [transponder] = await db.insert(transponders).values({ number: "TX-DEMO-17" }).returning();
+  await db.insert(transponderAssignments).values({ transponderId: transponder.id, racerId: demoRacer.id, startDate: "2021-01-01" });
+
+  // Three rivals guaranteed to race alongside the demo racer every round —
+  // real seeded racers' attendance is randomized, which would make this
+  // showcase profile's race count non-deterministic.
+  const rivalNames = [["Priya", "Nakamura"], ["Diego", "Alderman"], ["Sloane", "Osei"]];
+  const rivals: (typeof racers.$inferSelect)[] = [];
+  for (const [firstName, lastName] of rivalNames) {
+    const [rival] = await db
+      .insert(racers)
+      .values({
+        slug: `demo-rival-${firstName.toLowerCase()}`,
+        firstName,
+        lastName,
+        isMinor: false,
+        classDefault: DEMO_CLASS,
+        homeTrackId: track.id,
+        isFictionalDemo: true,
+      })
+      .returning();
+    rivals.push(rival);
+  }
+
+  const demoEventDates = ["2026-02-01", "2026-02-22", "2026-03-15", "2026-04-05", "2026-04-26", "2026-05-17", "2026-06-07", "2026-06-28", "2026-07-19", "2026-08-16"];
+
+  for (let round = 0; round < demoEventDates.length; round++) {
+    const [event] = await db
+      .insert(events)
+      .values({ trackId: track.id, name: `${track.name.split(" (")[0]} Round`, date: demoEventDates[round], isFictionalDemo: true })
+      .returning();
+
+    const [raceSession] = await db
+      .insert(raceSessions)
+      .values({ eventId: event.id, type: "race", className: DEMO_CLASS })
+      .returning();
+
+    // Demo racer wins most rounds, podiums the rest — a strong, consistent
+    // season (this is the "full" density showcase, not the realistic one).
+    const demoWins = round < 7;
+    const entrants = [
+      { racer: demoRacer, skillMs: -900, position: demoWins ? 1 : 2 },
+      { racer: rivals[0], skillMs: -200, position: demoWins ? 2 : 1 },
+      { racer: rivals[1], skillMs: 300, position: 3 },
+      { racer: rivals[2], skillMs: 700, position: 4 },
+    ];
+
+    for (const entrant of entrants) {
+      const lapTimes = generateLaps(12, DEMO_BASE_LAP_MS, entrant.skillMs);
+      const totalTimeMs = lapTimes.reduce((a, b) => a + b, 0);
+      const [result] = await db
+        .insert(results)
+        .values({
+          sessionId: raceSession.id,
+          racerId: entrant.racer.id,
+          kartNumber: entrant.racer.numberDefault,
+          position: entrant.position,
+          laps: lapTimes.length,
+          bestLapMs: Math.min(...lapTimes),
+          totalTimeMs,
+          status: "finished",
+          points: pointsForPosition(entrant.position),
+          provenance: "transponder_verified",
+          ingestPath: "mylaps",
+          sourceRef: { demoFixture: true, showcase: "demo-jordan-vance" },
+          publishedAt: new Date(),
+        })
+        .returning();
+      await db.insert(laps).values(lapTimes.map((lapTimeMs, idx) => ({ resultId: result.id, lapNumber: idx + 1, lapTimeMs })));
+    }
+  }
+
+  return demoRacer;
+}
+
+const ZONE_TEMPLATE: { name: string; tier: "premium" | "mid" | "entry" }[] = [
+  { name: "Nose Cone", tier: "premium" },
+  { name: "Helmet Top", tier: "premium" },
+  { name: "Suit Chest", tier: "premium" },
+  { name: "Front Bumper", tier: "mid" },
+  { name: "Side Pod Left", tier: "mid" },
+  { name: "Side Pod Right", tier: "mid" },
+  { name: "Suit Back", tier: "mid" },
+  { name: "Rear Bumper", tier: "entry" },
+  { name: "Rear Fender Left", tier: "entry" },
+  { name: "Rear Fender Right", tier: "entry" },
+];
+
+const TIER_PRICE: Record<string, number> = { premium: 220, mid: 130, entry: 60 };
+
+/** Seeds the 10-zone template for a racer, with a handful of them actively
+ * listed — section 4's zone system, display-only in Phase 3 (checkout/
+ * bidding logic lands in Phase 5). */
+async function seedZonesForRacer(racerId: string, listedCount: number) {
+  for (let i = 0; i < ZONE_TEMPLATE.length; i++) {
+    const template = ZONE_TEMPLATE[i];
+    const [zone] = await db
+      .insert(zones)
+      .values({ racerId, name: template.name, tier: template.tier, sortOrder: i })
+      .returning();
+
+    if (i < listedCount) {
+      await db.insert(zoneListings).values({
+        zoneId: zone.id,
+        listingType: "buy_now",
+        term: "season",
+        priceUsd: TIER_PRICE[template.tier],
+        isActive: true,
+        guardianApprovedAt: new Date(), // adults only seeded this way — no guardian gate needed
+      });
+    }
+  }
 }
 
 async function clearAll() {
@@ -275,6 +436,15 @@ async function main() {
         isGuardianClaim: true,
       });
     }
+  }
+
+  console.log("Creating the /demo showcase racer...");
+  const demoRacer = await createDemoRacer(trackA);
+  await seedZonesForRacer(demoRacer.id, 4);
+
+  console.log("Listing zones for a few claimed racers (marketplace seed data)...");
+  for (const racer of claimableAdults.slice(0, 3)) {
+    await seedZonesForRacer(racer.id, randInt(rng, 1, 3));
   }
 
   console.log("Recomputing ratings...");

@@ -46,6 +46,9 @@ export function ghostProfileView(racer: RawRacerRecord) {
       age: null,
       classDefault: racer.classDefault,
       numberDefault: racer.numberDefault,
+      bio: null,
+      story: null,
+      socialFollowingSelfReported: null,
       claimStatus: racer.claimStatus,
       isMinor: true,
       noindex: true,
@@ -60,6 +63,11 @@ export function ghostProfileView(racer: RawRacerRecord) {
     age: ageDisplay(racer),
     classDefault: racer.classDefault,
     numberDefault: racer.numberDefault,
+    // An unclaimed adult ghost profile is ordinary (section 3) but hasn't
+    // had a chance to write a story yet — that's authored at claim time.
+    bio: null,
+    story: null,
+    socialFollowingSelfReported: null,
     claimStatus: racer.claimStatus,
     isMinor: false,
     noindex: false,
