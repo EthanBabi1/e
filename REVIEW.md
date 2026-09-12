@@ -8,4 +8,9 @@ Ordered by what blocks launch soonest. Every item here is either a stub to repla
 2. **No existing repo was supplied** despite the brief describing one live at a Vercel URL. The racer profile, zone system, and Stripe bid flow were built fresh from the written spec in EXISTING CODE rather than lifted from real prior code/assets. If a real prior build exists, hand over its actual repo and photography/hero assets so they can replace what's here.
 3. **CONFIG values are placeholders**: `PLATFORM_NAME` ("Podium Row"), `DOMAIN` (`podiumrow.example`), `LAUNCH_TRACK`/`LAUNCH_REGION` (a labeled fictional demo track, "Millhaven Kart Club (demo)"). Supply real values and re-run the seed/launch tooling against them — see `DECISIONS.md` for why these were chosen instead of left blank.
 
+## Phase 1
+
+4. **Guardian-required enforcement for minors is application-layer only, not a DB constraint** (see `DECISIONS.md`). Fine for the seed script's own discipline; needs to be airtight in Phase 4's real signup flow — worth a second look before real minors' data is on the platform.
+5. **DQ results currently count toward rating movement** (only DNF/DNS are excluded, per literal brief wording). If disqualifications should also be rating-neutral, flag it and it's a small change.
+
 (This file is appended to at each phase boundary as stubs, credentials, and legal-review items accumulate. See phase-boundary commits for the running list.)
