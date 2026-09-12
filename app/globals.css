@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+:root {
+  /* Palette — brief section 1. Do not add colors outside this set without
+     updating DESIGN.md; --accent is a scalpel, not a paint roller. */
+  --paper: #FAFAF8;
+  --marble: #F2F0EC;
+  --mist: #E6E4DF;
+  --ink: #0A0A0B;
+  --graphite: #5A5A5E;
+  --silver: #B8B5AE;
+  --accent: #C8102E;
+  --accent-soft: #FDF2F3;
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.8);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-marble: var(--marble);
+  --color-mist: var(--mist);
+  --color-ink: var(--ink);
+  --color-graphite: var(--graphite);
+  --color-silver: var(--silver);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+}
+
+/* No dark mode in v1 — explicit anti-pattern in the brief. Tokens above are
+   the only palette, defined once. */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: -0.03em;
+}
+
+.font-mono-tabular {
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.label-small {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+.marble-surface {
+  background-image: radial-gradient(circle at 20% 20%, #ffffff 0%, var(--marble) 45%, #e9e6df 100%);
+  background-size: 200% 200%;
+  animation: marble-drift 26s ease-in-out infinite;
+}
+
+@keyframes marble-drift {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marble-surface {
+    animation: none;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.accent-underline {
+  position: relative;
+}
+.accent-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 0%;
+  background: var(--accent);
+  transition: width 240ms ease;
+}
+.accent-underline:hover::after {
+  width: 100%;
+}
