@@ -225,6 +225,7 @@ async function main() {
                 provenance,
                 ingestPath: "mylaps",
                 sourceRef: { demoFixture: true, track: track.slug, event: eventDate, session: sessionType, class: cls.name },
+                publishedAt: new Date(),
               })
               .returning();
 

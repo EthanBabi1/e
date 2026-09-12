@@ -8,6 +8,13 @@
       "when": 1789252676443,
       "tag": "0000_far_chameleon",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789254079436,
+      "tag": "0001_burly_the_initiative",
+      "breakpoints": true
     }
   ]
 }

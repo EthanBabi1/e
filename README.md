@@ -45,9 +45,23 @@ Unit tests (ratings engine, minors redaction) need no setup. Integration tests t
 
 Next.js 15 (App Router, Turbopack) · TypeScript · Tailwind v4 · Drizzle ORM / Postgres (Neon) · Auth.js · Stripe (test mode only) · Resend + React Email · Anthropic API (results extraction) · Framer Motion + Lenis.
 
+## Ingest (Phase 2)
+
+Four paths land results, all converging on one review-before-publish screen:
+
+- **Manual entry** (`/dashboard/results/import`, "Type it in") — always available.
+- **CSV / paste** — auto-detects columns, remembers the mapping per track after the first upload.
+- **Photo / PDF of a results sheet** — needs `ANTHROPIC_API_KEY`; without it the route returns a clean "use manual entry instead" response rather than failing.
+- **MYLAPS transponder import** — off by default (`FEATURE_MYLAPS_IMPORT=false`). See `DATA-ACCESS.md` for why; flipping it on runs against a documented fixture adapter, not a live upstream, until real API access is confirmed.
+
+No row becomes visible on a public page, a leaderboard, or a rating until it's confirmed on the review screen (`results.publishedAt`) — this holds even for a technically "verified" source.
+
+Export a racer's full record any time: `GET /api/export/:racerId/csv` and `/pdf`.
+
 ## Full setup (filled in as each phase lands)
 
 - **Database / migrations / seed** — done, Phase 1 (above).
+- **Results ingest** — done, Phase 2 (above).
 - **Auth / accounts** — added in Phase 4.
 - **Stripe webhook forwarding** — added in Phase 5.
 - **Cron jobs** — added in Phase 5/6.

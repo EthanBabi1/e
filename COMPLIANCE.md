@@ -8,9 +8,11 @@ This is the enforceable contract for every fixed rule in the brief's sections 2,
 
 Rules enforced, and where:
 
+**Correction from an earlier draft of this file**: a *ghost* profile (unclaimed, created from a track's or a racer's ingest) legitimately exists with **no guardian at all** — nobody has an account yet. The guardian requirement below applies from the moment a minor's profile is claimed, or before any listing goes public, message is sent, or money moves — not to the bare existence of an unclaimed row. `lib/minors/inferAge.ts` and the ghost-profile creation path (`lib/ingest/shared/ghostRacer.ts`) never create a guardian; `lib/accounts/claim.ts` (Phase 4) does, as part of claiming.
+
 | Rule | Enforced in |
 |---|---|
-| Under-18 racer created under a guardian account; guardian is the legal account holder | `db/schema/guardians.ts` FK constraint: a minor `racer` row cannot exist without a `guardian_racers` row |
+| Under-18 racer, once claimed, is under a guardian account; guardian is the legal account holder | Claim flow (Phase 4) creates the `guardian_racers` row transactionally with the claim; `zone_listings`/`sponsorships` gate on a guardian existing before going public (Phase 5) |
 | Stripe Connect account belongs to guardian, never minor | `lib/stripe/connect.ts` — `createConnectAccount` takes a `guardianId`, has no code path accepting a minor's id |
 | No email/phone/address/DOB/school shown for under-18 | `lib/minors/redact.ts`, applied at the query-serialization boundary before any profile payload leaves the server |
 | Age shown as number/bracket only, never DOB | `lib/minors/redact.ts` → `ageDisplay()` |

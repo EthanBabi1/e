@@ -19,7 +19,7 @@ RUN("leaderboard (integration, real Postgres)", () => {
       .returning();
     trackId = track.id;
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       const [racer] = await db
         .insert(racers)
         .values({
@@ -54,6 +54,7 @@ RUN("leaderboard (integration, real Postgres)", () => {
           status: "finished",
           provenance: "transponder_verified",
           ingestPath: "mylaps",
+          publishedAt: new Date(),
         },
         {
           sessionId: session.id,
@@ -62,6 +63,7 @@ RUN("leaderboard (integration, real Postgres)", () => {
           status: "finished",
           provenance: "transponder_verified",
           ingestPath: "mylaps",
+          publishedAt: new Date(),
         },
       ]);
     }
@@ -84,6 +86,30 @@ RUN("leaderboard (integration, real Postgres)", () => {
         status: "finished",
         provenance: "self_reported",
         ingestPath: "manual",
+        publishedAt: new Date(),
+      });
+    }
+
+    // Racer 3: nine real, verified results that are still drafts (never
+    // confirmed on the review screen) — publishedAt stays null. Must never
+    // move a rating, per the same gate as self-reported exclusion.
+    for (let i = 0; i < 9; i++) {
+      const [event] = await db
+        .insert(events)
+        .values({ trackId, name: `Draft Event ${i}`, date: `2026-0${(i % 9) + 1}-03`, isFictionalDemo: true })
+        .returning();
+      const [session] = await db
+        .insert(raceSessions)
+        .values({ eventId: event.id, type: "race", className })
+        .returning();
+      await db.insert(results).values({
+        sessionId: session.id,
+        racerId: racerIds[3],
+        position: 1,
+        status: "finished",
+        provenance: "transponder_verified",
+        ingestPath: "photo",
+        publishedAt: null,
       });
     }
 
@@ -118,5 +144,11 @@ RUN("leaderboard (integration, real Postgres)", () => {
     // clear the threshold — confirm losing racers aren't hidden, only
     // provisional ones are.
     expect(names).toContain("Test Racer1");
+  });
+
+  it("never includes a racer whose only results are unpublished drafts", async () => {
+    const board = await getLeaderboard({ className, trackId });
+    const names = board.map((e) => e.racer.displayName);
+    expect(names).not.toContain("Test Racer3");
   });
 });

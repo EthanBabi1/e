@@ -1,8 +1,9 @@
-import { boolean, date, integer, jsonb, pgTable, text } from "drizzle-orm/pg-core";
+import { boolean, date, integer, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { idColumn, createdAtColumn } from "./columns.helpers";
 import { tracks } from "./tracks";
 import { racers } from "./racers";
 import { ingestPathEnum, provenanceEnum, resultStatusEnum, sessionTypeEnum } from "./enums";
+import { ingestBatches } from "./ingest";
 
 export const events = pgTable("events", {
   id: idColumn(),
@@ -53,6 +54,14 @@ export const results = pgTable("results", {
   // Upstream identifiers for idempotent re-sync/provenance tracing (section 3).
   sourceRef: jsonb("source_ref").$type<Record<string, unknown>>(),
   extractionConfidence: jsonb("extraction_confidence").$type<Record<string, number>>(),
+
+  // The review-before-publish gate (section 3): a row parsed from a photo/
+  // CSV/manual entry lands here with publishedAt = null and is invisible
+  // to every public/ranked query until a human confirms it on the review
+  // screen. Direct programmatic writes (seed data, an already-confirmed
+  // import) pass publishedAt explicitly — see lib/ingest/shared/publish.ts.
+  publishedAt: timestamp("published_at", { withTimezone: true }),
+  ingestBatchId: text("ingest_batch_id").references(() => ingestBatches.id, { onDelete: "set null" }),
 
   createdAt: createdAtColumn(),
 });

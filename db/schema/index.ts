@@ -8,3 +8,4 @@ export * from "./events";
 export * from "./series";
 export * from "./claims";
 export * from "./ratings";
+export * from "./ingest";

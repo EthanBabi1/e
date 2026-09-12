@@ -1,11 +1,8 @@
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray, isNotNull } from "drizzle-orm";
 import { db } from "@/db/client";
 import { events, raceSessions, results, ratings, ratingHistory } from "@/db/schema";
 import { DEFAULT_RATING, isProvisional, updateRatingsForRace, type RaceParticipant, type RatingState } from "./engine";
-
-// Only these count toward anything ranked (section 8) — self-reported
-// results never move a rating or appear on a leaderboard.
-const RANKED_PROVENANCE = ["transponder_verified", "track_verified", "source_linked"] as const;
+import { RANKED_PROVENANCE } from "./provenance";
 
 /**
  * Recomputes every rating from scratch, in chronological event order. Safe
@@ -31,7 +28,13 @@ export async function recomputeAllRatings() {
     .from(results)
     .innerJoin(raceSessions, eq(results.sessionId, raceSessions.id))
     .innerJoin(events, eq(raceSessions.eventId, events.id))
-    .where(and(eq(raceSessions.type, "race"), inArray(results.provenance, [...RANKED_PROVENANCE])))
+    .where(
+      and(
+        eq(raceSessions.type, "race"),
+        inArray(results.provenance, [...RANKED_PROVENANCE]),
+        isNotNull(results.publishedAt) // review-before-publish gate (section 3) — drafts never move a rating
+      )
+    )
     .orderBy(asc(events.date), asc(raceSessions.id));
 
   // One race = one race_sessions row (already scoped to a single class).
