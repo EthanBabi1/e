@@ -29,18 +29,21 @@ function lerp(a, b, t) {
   return a + (b - a) * t;
 }
 
-// name -> [startProgress, endProgress] within the overall 0..1 scrub
+// name -> [startProgress, endProgress] within the overall 0..1 scrub.
+// Weighted toward the surfaces a sponsor's livery actually goes on (nose,
+// side pods, bumpers, seat back, number panels, helmet) per the reference
+// photo set, with a few mechanical parts kept for context.
 const SATELLITES = [
-  { name: "steering-front-axle", row: "top", col: 0, timing: [0.0, 0.32] },
-  { name: "seat", row: "top", col: 1, timing: [0.05, 0.37] },
-  { name: "fuel-tank", row: "top", col: 2, timing: [0.1, 0.42] },
-  { name: "nose-cone", row: "top", col: 3, timing: [0.15, 0.47] },
-  { name: "side-pod-left", row: "top", col: 4, timing: [0.2, 0.52] },
+  { name: "nose-cone", row: "top", col: 0, timing: [0.0, 0.32] },
+  { name: "side-pod-left", row: "top", col: 1, timing: [0.05, 0.37] },
+  { name: "number-panels", row: "top", col: 2, timing: [0.1, 0.42] },
+  { name: "helmet", row: "top", col: 3, timing: [0.15, 0.47] },
+  { name: "seat", row: "top", col: 4, timing: [0.2, 0.52] },
   { name: "wheel-a", row: "bottom", col: 0, timing: [0.25, 0.57] },
-  { name: "rear-axle", row: "bottom", col: 1, timing: [0.3, 0.62] },
-  { name: "engine", row: "bottom", col: 2, timing: [0.35, 0.67] },
-  { name: "front-bumper", row: "bottom", col: 3, timing: [0.4, 0.72] },
-  { name: "side-pod-right", row: "bottom", col: 4, timing: [0.45, 0.77] },
+  { name: "front-bumper", row: "bottom", col: 1, timing: [0.3, 0.62] },
+  { name: "rear-bumper", row: "bottom", col: 2, timing: [0.35, 0.67] },
+  { name: "side-pod-right", row: "bottom", col: 3, timing: [0.4, 0.72] },
+  { name: "engine", row: "bottom", col: 4, timing: [0.45, 0.77] },
 ];
 
 const OUTER_MARGIN = 40;
