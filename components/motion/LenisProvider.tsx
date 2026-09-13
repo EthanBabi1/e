@@ -2,7 +2,11 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMotionAllowed } from "@/lib/motion/useMotionAllowed";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function LenisProvider({ children }: { children: React.ReactNode }) {
   const motionAllowed = useMotionAllowed();
@@ -15,15 +19,23 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
     });
 
-    let frameId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      frameId = requestAnimationFrame(raf);
+    // components/ui/hero-scrub.tsx drives its choreography off GSAP's
+    // ScrollTrigger, which by default reads the native `scroll` event —
+    // Lenis fires that on its own smoothed schedule, not on every native
+    // scroll tick, so without this pairing ScrollTrigger reads a stale
+    // position mid-scrub. This is the pairing both projects' own docs
+    // recommend: GSAP's ticker drives Lenis's raf loop (replacing the
+    // plain requestAnimationFrame loop this had before), and Lenis
+    // tells ScrollTrigger to recompute on every one of its own frames.
+    function gsapDrivenRaf(time: number) {
+      lenis.raf(time * 1000);
     }
-    frameId = requestAnimationFrame(raf);
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(gsapDrivenRaf);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      cancelAnimationFrame(frameId);
+      gsap.ticker.remove(gsapDrivenRaf);
       lenis.destroy();
     };
   }, [motionAllowed]);

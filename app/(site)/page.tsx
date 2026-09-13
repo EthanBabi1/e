@@ -5,6 +5,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { CountUp } from "@/components/motion/CountUp";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { SpeedLines } from "@/components/motion/SpeedLines";
+import { HeroKartSection } from "@/components/home/HeroKartSection";
 
 export const dynamic = "force-dynamic";
 
@@ -87,6 +88,8 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
+      <HeroKartSection />
 
       {!hasActivity && (
         <section className="max-w-3xl mx-auto px-6 py-12">
