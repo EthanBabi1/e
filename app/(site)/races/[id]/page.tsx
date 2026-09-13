@@ -47,7 +47,31 @@ export default async function RacePage({ params }: { params: Promise<{ id: strin
         {data.session.name ? ` (${data.session.name})` : ""}
       </h1>
 
-      <table className="w-full text-sm border-collapse">
+      {/* Below sm: a fourth column carrying a "Transponder-verified"-length
+          badge either wraps mid-pill or forces an unsigned horizontal
+          scroll — a stacked row reads better on a phone than either. */}
+      <div className="sm:hidden space-y-3">
+        {data.rows.map((row) => (
+          <div key={row.result.id} className="rounded-xl border border-mist p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="tabular font-medium">
+                {row.result.status === "finished" ? `P${row.result.position}` : row.result.status.toUpperCase()}
+              </span>
+              <ProvenanceBadge provenance={row.result.provenance} />
+            </div>
+            {row.racer ? (
+              <Link href={`/racers/${row.racer.slug}`} className="accent-underline block mb-1">
+                {row.racer.displayName}
+              </Link>
+            ) : (
+              <span className="text-graphite block mb-1">{row.result.driverNameRaw ?? "Unknown"}</span>
+            )}
+            <span className="font-mono-tabular tabular text-sm text-graphite">{formatLap(row.result.bestLapMs)}</span>
+          </div>
+        ))}
+      </div>
+
+      <table className="hidden sm:table w-full text-sm border-collapse">
         <thead>
           <tr className="text-left border-b border-mist label-small">
             <th className="py-2 pr-4">Pos</th>

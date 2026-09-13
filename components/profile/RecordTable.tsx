@@ -14,7 +14,33 @@ export function RecordTable({ results }: { results: SeasonResultRow[] }) {
   return (
     <section className="max-w-5xl mx-auto px-6 py-12">
       <p className="label-small mb-4">Record</p>
-      <div className="overflow-x-auto">
+
+      {/* Below sm: six columns (including a "Transponder-verified"-length
+          badge) never fit 375px without either scrolling with no
+          affordance or losing a column's information — a stacked card per
+          result reads better on a phone than either of those. */}
+      <div className="sm:hidden space-y-3">
+        {raceResults.map((r) => (
+          <div key={r.resultId} className="rounded-xl border border-mist p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="tabular text-graphite text-xs">{r.date}</span>
+              <ProvenanceBadge provenance={r.provenance} />
+            </div>
+            <Link href={`/races/${r.sessionId}`} className="accent-underline font-medium block mb-1">
+              {r.trackName}
+            </Link>
+            <p className="text-xs text-graphite mb-2">{r.className}</p>
+            <div className="flex gap-4 text-sm">
+              <span className="tabular">
+                {r.status === "finished" ? `P${r.position}` : r.status.toUpperCase()}
+              </span>
+              <span className="tabular font-mono-tabular text-graphite">{formatLap(r.bestLapMs)}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="hidden sm:block overflow-x-auto">
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr className="text-left border-b border-mist label-small">
