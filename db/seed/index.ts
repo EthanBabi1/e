@@ -210,7 +210,7 @@ async function clearAll() {
   `);
 }
 
-async function main() {
+export async function runSeed() {
   console.log("Clearing existing data...");
   await clearAll();
 
@@ -473,9 +473,3 @@ async function main() {
   console.log(`Self-reported test results injected: ${selfReportedInjected}`);
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
