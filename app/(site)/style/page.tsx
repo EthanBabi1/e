@@ -17,11 +17,11 @@ export default function StylePage() {
   return (
     <main className="max-w-5xl mx-auto px-6 py-16 space-y-20">
       <header>
-        <p className="label-small mb-2">Design system — Phase 0 deliverable</p>
+        <p className="label-small mb-2">Design system, Phase 0 deliverable</p>
         <h1 className="font-display text-5xl mb-3">Podium Row style tile</h1>
         <p className="text-graphite max-w-xl">
           Rendered tokens, type scale and motion primitives from DESIGN.md. This
-          page is a working reference, not marketing — see it as a QA surface
+          page is a working reference, not marketing. See it as a QA surface
           for the aesthetic rules in the brief&apos;s section 1.
         </p>
       </header>
@@ -55,7 +55,7 @@ export default function StylePage() {
       </section>
 
       <section>
-        <h2 className="label-small mb-4">Motion — count-up (fires once, in view)</h2>
+        <h2 className="label-small mb-4">Motion: count-up (fires once, in view)</h2>
         <div className="flex gap-10">
           <div>
             <CountUp value={34} className="font-display text-4xl" />
@@ -69,7 +69,7 @@ export default function StylePage() {
       </section>
 
       <section>
-        <h2 className="label-small mb-4">Motion — magnetic CTA</h2>
+        <h2 className="label-small mb-4">Motion: magnetic CTA</h2>
         <MagneticButton>View racer profile</MagneticButton>
       </section>
 
@@ -77,7 +77,7 @@ export default function StylePage() {
         <h2 className="label-small mb-4">Glass card on marble</h2>
         <div className="marble-surface rounded-2xl p-10">
           <div className="glass rounded-xl p-6 max-w-sm">
-            <p className="label-small mb-2">Zone — Nose Cone</p>
+            <p className="label-small mb-2">Zone: Nose Cone</p>
             <p className="font-display text-2xl">$180 buy now</p>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function StylePage() {
         <EmptyState
           eyebrow="Marketplace"
           title="The first racers at Millhaven Kart Club"
-          body="Nobody has listed a zone here yet — you'd be the first name on this page."
+          body="Nobody has listed a zone here yet. You'd be the first name on this page."
           action={<MagneticButton>List your kart</MagneticButton>}
         />
       </section>

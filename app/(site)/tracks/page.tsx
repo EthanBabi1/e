@@ -19,7 +19,7 @@ export default async function TracksIndexPage() {
       <p className="label-small mb-2">Tracks</p>
       <h1 className="font-display text-4xl mb-2">Every track on {CONFIG.platformName}</h1>
       <p className="text-graphite mb-10 max-w-xl">
-        Championship standings, verified results, and an embeddable leaderboard — free for any
+        Championship standings, verified results, and an embeddable leaderboard, free for any
         track, claimed or not.
       </p>
 

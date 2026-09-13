@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const data = await getProfileDataBySlug(slug);
   if (!data) return {};
 
-  const title = `${data.view.displayName} — ${data.view.classDefault ?? "Kart racer"} | ${CONFIG.platformName}`;
+  const title = `${data.view.displayName}, ${data.view.classDefault ?? "Kart racer"} | ${CONFIG.platformName}`;
   const description = data.headlineStats.length
     ? `${data.view.displayName}: ${data.headlineStats.map((s) => `${s.value} ${s.label}`).join(", ")}.`
     : `${data.view.displayName}'s verified karting record on ${CONFIG.platformName}.`;

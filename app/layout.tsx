@@ -21,7 +21,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${CONFIG.platformName} — Verified karting results, sold as sponsorship`,
+  title: `${CONFIG.platformName}: Verified karting results, sold as sponsorship`,
   description:
     "Racers turn verified race results into local sponsorship. Tracks get free championship automation. This is a development build with test data only.",
   metadataBase: new URL(`https://${CONFIG.domain}`),

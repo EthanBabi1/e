@@ -14,7 +14,7 @@ export default async function ModerationPage() {
       <h1 className="font-display text-4xl mb-8">Moderation queue</h1>
 
       <section className="mb-10">
-        <p className="label-small mb-3">Takedown requests (section 3 — 48 hour SLA)</p>
+        <p className="label-small mb-3">Takedown requests (section 3, 48 hour SLA)</p>
         {takedowns.length === 0 ? (
           <EmptyState title="No open takedown requests" />
         ) : (

@@ -11,7 +11,7 @@ import { CONFIG } from "@/lib/config";
  */
 export function SponsorshipSoldEmail({ racerName, zoneName, amountUsd, recipientIsGuardian }: { racerName: string; zoneName: string; amountUsd: number; recipientIsGuardian: boolean }) {
   return (
-    <EmailShell preview={`A sponsorship sold — ${zoneName}`}>
+    <EmailShell preview={`A sponsorship sold: ${zoneName}`}>
       <Heading style={{ fontSize: 22 }}>A sponsorship sold</Heading>
       <Text>
         {recipientIsGuardian ? `${racerName}'s` : "Your"} {zoneName} zone sold for ${amountUsd}. Funds release once the decal photo is confirmed.

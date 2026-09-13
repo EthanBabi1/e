@@ -16,7 +16,7 @@ export default async function SeriesSponsorshipsAdminPage() {
     <main className="max-w-2xl mx-auto px-6 py-16">
       <h1 className="font-display text-4xl mb-2">Series sponsorships</h1>
       <p className="text-graphite mb-8 text-sm">
-        Section 7&apos;s biggest-ticket line — naming rights on a championship or class. Admin-created manually in v1, no self-serve checkout yet.
+        Section 7&apos;s biggest-ticket line: naming rights on a championship or class. Admin-created manually in v1, no self-serve checkout yet.
       </p>
 
       <CreateSeriesSponsorshipForm seriesOptions={allSeries.map((s) => ({ id: s.id, name: s.name, classes: s.classes as string[] }))} />
@@ -29,7 +29,7 @@ export default async function SeriesSponsorshipsAdminPage() {
           <div className="space-y-2">
             {deals.map((d) => (
               <div key={d.id} className="rounded-lg border border-mist p-3 text-sm">
-                {d.sponsorOrgName} — ${d.rateUsd} — {d.className ?? "whole series"} — {d.status}
+                {d.sponsorOrgName} · ${d.rateUsd} · {d.className ?? "whole series"} · {d.status}
               </div>
             ))}
           </div>

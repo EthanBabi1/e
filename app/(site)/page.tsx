@@ -8,7 +8,7 @@ import { MagneticButton } from "@/components/motion/MagneticButton";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: `${CONFIG.platformName} — turn verified race results into sponsorship`,
+  title: `${CONFIG.platformName}: turn verified race results into sponsorship`,
   description:
     "Grassroots kart racers get a real profile built from verified results. Local businesses sponsor a racer, not just a logo on a kart. Tracks get free championship tools.",
 };
@@ -16,7 +16,7 @@ export const metadata = {
 const HOW_IT_WORKS = [
   {
     title: "Your results, verified",
-    body: "Import from a transponder system, a photo of the results sheet, or type them in yourself — every row is reviewed before it counts, and self-reported results are always labelled as such.",
+    body: "Import from a transponder system, a photo of the results sheet, or type them in yourself. Every row is reviewed before it counts, and self-reported results are always labelled as such.",
   },
   {
     title: "A real profile, not a stat sheet",
@@ -24,7 +24,7 @@ const HOW_IT_WORKS = [
   },
   {
     title: "Sponsored by name, not by luck",
-    body: "Businesses browse racers near them and sponsor a zone on the kart — a decal spot, a season, an event — for a price you set within a fair range.",
+    body: "Businesses browse racers near them and sponsor a zone on the kart (a decal spot, a season, an event) for a price you set within a fair range.",
   },
 ];
 
@@ -46,7 +46,7 @@ export default async function Home() {
         <Reveal index={2}>
           <p className="text-graphite mb-8 max-w-xl">
             {CONFIG.platformName} turns a grassroots kart racer&apos;s verified race record into a
-            profile local businesses can actually sponsor — no paid placement, no invented
+            profile local businesses can actually sponsor. No paid placement, no invented
             rankings, ever.
           </p>
         </Reveal>
@@ -83,7 +83,7 @@ export default async function Home() {
         <section className="max-w-3xl mx-auto px-6 py-12">
           <Reveal>
             <p className="text-graphite text-sm">
-              {CONFIG.platformName} is just getting started at {CONFIG.launchTrack} — the racers
+              {CONFIG.platformName} is just getting started at {CONFIG.launchTrack}. The racers
               above are the first ones on the platform, not a filtered sample of a bigger list.
             </p>
           </Reveal>

@@ -40,7 +40,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                 <Link href={`/racers/${hit.racer.slug}`} className="accent-underline font-medium">
                   {hit.racer.displayName}
                 </Link>
-                {hit.racer.classDefault && <span className="text-graphite text-sm"> — {hit.racer.classDefault}</span>}
+                {hit.racer.classDefault && <span className="text-graphite text-sm"> · {hit.racer.classDefault}</span>}
               </li>
             ))}
           </ul>

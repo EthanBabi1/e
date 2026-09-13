@@ -59,7 +59,7 @@ export default async function AdminPage() {
       </div>
 
       <h2 className="label-small mb-4">
-        Top ratings across all classes (includes provisional — flagged; a public leaderboard would filter these out)
+        Top ratings across all classes (includes provisional, flagged; a public leaderboard would filter these out)
       </h2>
       <table className="w-full text-sm border-collapse">
         <thead>
@@ -80,7 +80,7 @@ export default async function AdminPage() {
               <td>{r.className}</td>
               <td className="tabular">{confidenceBandLabel({ mu: r.mu, sigma: r.sigma, rankedResultCount: r.rankedResultCount })}</td>
               <td className="tabular">{r.rankedResultCount}</td>
-              <td>{r.isProvisional ? "yes — hidden from public leaderboard" : "no"}</td>
+              <td>{r.isProvisional ? "yes, hidden from public leaderboard" : "no"}</td>
             </tr>
           ))}
         </tbody>

@@ -26,7 +26,7 @@ export default async function ProfileEditPage({ searchParams }: { searchParams: 
     <main className="max-w-lg mx-auto px-6 py-16">
       <h1 className="font-display text-3xl mb-2">Edit {racer.firstName}&apos;s story</h1>
       <p className="text-graphite mb-8 text-sm">
-        This is what shows above the results on the public profile — section 0&apos;s point: at this level, the story is what sells, results are the
+        This is what shows above the results on the public profile. Section 0&apos;s point: at this level, the story is what sells, results are the
         evidence.
       </p>
       <ProfileEditForm

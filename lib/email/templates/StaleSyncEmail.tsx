@@ -9,8 +9,8 @@ export function StaleSyncEmail({ racerName }: { racerName: string }) {
     <EmailShell preview="Your results sync has been stuck for a week">
       <Heading style={{ fontSize: 22 }}>Your MYLAPS sync hasn&apos;t updated in a week</Heading>
       <Text>
-        We haven&apos;t been able to pull new results for {racerName} in over 7 days. This isn&apos;t necessarily a problem with your transponder
-        — it can happen on our end too. In the meantime, you can add results with a photo of the results sheet or by typing them in.
+        We haven&apos;t been able to pull new results for {racerName} in over 7 days. This isn&apos;t necessarily a problem with your transponder,
+        it can happen on our end too. In the meantime, you can add results with a photo of the results sheet or by typing them in.
       </Text>
       <Button href={`https://${CONFIG.domain}/dashboard/results/import`} style={{ background: "#0A0A0B", color: "#FAFAF8", padding: "12px 24px", borderRadius: 999 }}>
         Add results manually

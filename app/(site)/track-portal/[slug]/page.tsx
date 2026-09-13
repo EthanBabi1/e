@@ -42,7 +42,7 @@ export default async function TrackPortalPage({ params }: { params: Promise<{ sl
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-16">
-      <h1 className="font-display text-4xl mb-2">{track.name} — track portal</h1>
+      <h1 className="font-display text-4xl mb-2">{track.name}: track portal</h1>
       <p className="text-graphite mb-10">Racing here this season: {roster.length} drivers, {claimedCount} with a claimed profile.</p>
 
       <section className="mb-10">
@@ -67,7 +67,7 @@ export default async function TrackPortalPage({ params }: { params: Promise<{ sl
           <ul className="space-y-2">
             {seriesList.map((s) => (
               <li key={s.id} className="rounded-lg border border-mist p-3 text-sm">
-                {s.name} — {s.seasonYear} — {(s.classes as string[]).join(", ")}
+                {s.name} · {s.seasonYear} · {(s.classes as string[]).join(", ")}
               </li>
             ))}
           </ul>

@@ -23,7 +23,7 @@ const BodySchema = z.object({ racerId: z.string(), sessions: z.array(SessionSche
 /** Racer confirmed "yes, these are my sessions" — section 3. */
 export async function POST(req: NextRequest) {
   if (!FEATURE_FLAGS.mylapsImport) {
-    return NextResponse.json({ error: "MYLAPS import is disabled — see DATA-ACCESS.md" }, { status: 503 });
+    return NextResponse.json({ error: "MYLAPS import is disabled. See DATA-ACCESS.md" }, { status: 503 });
   }
   const body = BodySchema.parse(await req.json());
   const result = await confirmAndImportMylapsSessions(body.racerId, body.sessions);

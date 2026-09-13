@@ -24,7 +24,7 @@ export default async function WithdrawalsAdminPage() {
     <main className="max-w-2xl mx-auto px-6 py-16">
       <h1 className="font-display text-4xl mb-2">Withdrawals</h1>
       <p className="text-graphite mb-8 text-sm">
-        Section 6&apos;s default policy: pro-rata refund of the unserved term, or a sponsor credit — the sponsor&apos;s choice.
+        Section 6&apos;s default policy: pro-rata refund of the unserved term, or a sponsor credit, the sponsor&apos;s choice.
       </p>
       {withRacers.length === 0 ? (
         <EmptyState title="No active sponsorships to withdraw" />
@@ -33,7 +33,7 @@ export default async function WithdrawalsAdminPage() {
           {withRacers.map(({ sponsorship, racer }) => (
             <div key={sponsorship.id} className="rounded-lg border border-mist p-4">
               <p className="text-sm font-medium">
-                {racer?.firstName} {racer?.lastName} — ${sponsorship.amountUsd}
+                {racer?.firstName} {racer?.lastName} · ${sponsorship.amountUsd}
               </p>
               <p className="text-xs text-graphite mb-2">{sponsorship.status}</p>
               <WithdrawalButton sponsorshipId={sponsorship.id} />

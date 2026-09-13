@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: `Leaderboards | ${CONFIG.platformName}`,
-  description: "Driver ratings by class — only racers past the provisional threshold appear here.",
+  description: "Driver ratings by class. Only racers past the provisional threshold appear here.",
 };
 
 export default async function LeaderboardsPage({
@@ -58,7 +58,7 @@ export default async function LeaderboardsPage({
       {entries.length === 0 ? (
         <EmptyState
           title="No settled ratings yet in this class"
-          body="Ratings stay private and provisional until a driver clears the minimum number of ranked results — that's by design, not a bug. Check back as the season plays out."
+          body="Ratings stay private and provisional until a driver clears the minimum number of ranked results. That's by design, not a bug. Check back as the season plays out."
         />
       ) : (
         <ol className="space-y-2">

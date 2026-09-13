@@ -53,7 +53,7 @@ export function ClaimForm({
       </h1>
       <p className="text-graphite mb-8">
         {racer.isMinor
-          ? "Since this racer is under 18, you're claiming this as their parent or guardian — you become the account holder, not them."
+          ? "Since this racer is under 18, you're claiming this as their parent or guardian. You become the account holder, not them."
           : "This will link this profile to your account."}
       </p>
 

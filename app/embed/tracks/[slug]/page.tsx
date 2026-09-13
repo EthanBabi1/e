@@ -38,7 +38,7 @@ export default async function TrackEmbedPage({ params }: { params: Promise<{ slu
           {latest.map((r) => (
             <li key={r.resultId} className="flex justify-between text-xs py-1 border-b border-mist">
               <span className="text-graphite">{r.className}</span>
-              <span className="tabular">P{r.position ?? "—"}</span>
+              <span className="tabular">{r.position != null ? `P${r.position}` : "N/A"}</span>
             </li>
           ))}
         </ul>

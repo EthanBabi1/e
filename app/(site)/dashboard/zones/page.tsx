@@ -42,7 +42,7 @@ export default async function ZonesPage({ searchParams }: { searchParams: Promis
       <h1 className="font-display text-4xl mb-2">Zones</h1>
       {racer.isMinor && (
         <p className="text-sm text-graphite mb-8 rounded-lg bg-marble p-4">
-          A guardian must approve each listing before it&apos;s public — you&apos;ll see a pending state until then.
+          A guardian must approve each listing before it&apos;s public. You&apos;ll see a pending state until then.
         </p>
       )}
       <ZonesManager zonesWithListings={zonesWithListings} isMinor={racer.isMinor} />

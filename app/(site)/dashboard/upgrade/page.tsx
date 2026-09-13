@@ -30,17 +30,17 @@ export default async function UpgradePage() {
         {gmv > 0 ? (
           savings.worthIt ? (
             <p className="text-sm">
-              At this rate, Pro would have saved you <span className="font-medium">${savings.feesSavedUsd.toFixed(0)}</span> in fees this season —{" "}
+              At this rate, Pro would have saved you <span className="font-medium">${savings.feesSavedUsd.toFixed(0)}</span> in fees this season,{" "}
               <span className="font-medium">${savings.netBenefitUsd.toFixed(0)} ahead</span> of the ${CONFIG.proAnnualUsd} price.
             </p>
           ) : (
             <p className="text-sm text-graphite">
-              Honestly, at this volume Pro would have saved you ${savings.feesSavedUsd.toFixed(0)} in fees — less than the ${CONFIG.proAnnualUsd}{" "}
+              Honestly, at this volume Pro would have saved you ${savings.feesSavedUsd.toFixed(0)} in fees, less than the ${CONFIG.proAnnualUsd}{" "}
               price. You&apos;re better off on the free tier for now.
             </p>
           )
         ) : (
-          <p className="text-sm text-graphite">No sponsorship sold yet this season — the free tier costs nothing while you build your record.</p>
+          <p className="text-sm text-graphite">No sponsorship sold yet this season. The free tier costs nothing while you build your record.</p>
         )}
       </div>
 

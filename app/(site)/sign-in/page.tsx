@@ -10,7 +10,7 @@ export default function SignInPage() {
 
       {!providersConfigured && (
         <p className="text-sm text-graphite mb-6 rounded-lg bg-marble p-4">
-          No auth providers are configured yet in this environment (no Resend or Google credentials — see REVIEW.md). Sign-in will not work until
+          No auth providers are configured yet in this environment (no Resend or Google credentials, see REVIEW.md). Sign-in will not work until
           one is supplied.
         </p>
       )}

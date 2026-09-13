@@ -7,7 +7,7 @@ export function ClaimInvitationEmail({ racerName, claimUrl }: { racerName: strin
     <EmailShell preview={`Claim ${racerName}'s profile`}>
       <Heading style={{ fontSize: 22 }}>Your profile is ready</Heading>
       <Text>
-        We found {racerName}&apos;s verified race results and built a profile — claim it to add your story, a photo, and start selling
+        We found {racerName}&apos;s verified race results and built a profile. Claim it to add your story, a photo, and start selling
         sponsorship.
       </Text>
       <Button href={claimUrl} style={{ background: "#0A0A0B", color: "#FAFAF8", padding: "12px 24px", borderRadius: 999 }}>

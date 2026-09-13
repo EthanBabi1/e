@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         .select()
         .from(policyVersions)
         .where(eq(policyVersions.slug, "minor-display-consent"));
-      if (!consentPolicy) return NextResponse.json({ error: "Consent policy not found — run the seed script" }, { status: 500 });
+      if (!consentPolicy) return NextResponse.json({ error: "Consent policy not found. Run the seed script." }, { status: 500 });
 
       await claimAsGuardian({
         racerId: body.racerId,

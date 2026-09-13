@@ -5,7 +5,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Demo profile — fictional",
+  title: "Demo profile (fictional)",
   robots: { index: false, follow: false }, // a demo page has no reason to rank
 };
 

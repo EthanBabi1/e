@@ -21,7 +21,7 @@ export function WithdrawalButton({ sponsorshipId }: { sponsorshipId: string }) {
       setResult(data.error);
       return;
     }
-    setResult(`Done — $${data.unservedUsd} ${mode === "refund" ? "refunded" : "credited"}.`);
+    setResult(`Done: $${data.unservedUsd} ${mode === "refund" ? "refunded" : "credited"}.`);
     router.refresh();
   }
 

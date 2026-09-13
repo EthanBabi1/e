@@ -30,7 +30,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ threadI
       </p>
       {isMinorThread(thread) && (
         <div className="rounded-lg bg-marble text-sm p-3 mb-6">
-          This racer is under 18 — this thread goes to their guardian, not the racer directly. Admin can review threads involving a minor.
+          This racer is under 18. This thread goes to their guardian, not the racer directly. Admin can review threads involving a minor.
         </div>
       )}
       <ThreadView threadId={threadId} initialMessages={messageRows} currentUserId={session.user.id} />

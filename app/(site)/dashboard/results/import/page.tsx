@@ -18,7 +18,7 @@ export default async function ImportPage() {
       <p className="label-small mb-2">Add results</p>
       <h1 className="font-display text-4xl mb-2">Get your results onto your profile</h1>
       <p className="text-graphite mb-10 max-w-xl">
-        Pick how you have them — a photo of the sheet, a spreadsheet from the track, or type them in yourself.
+        Pick how you have them: a photo of the sheet, a spreadsheet from the track, or type them in yourself.
       </p>
       <ImportWizard tracks={allTracks} />
     </main>

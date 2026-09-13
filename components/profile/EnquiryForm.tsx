@@ -37,7 +37,7 @@ export function EnquiryForm({ racerId, isMinor }: { racerId: string; isMinor: bo
   return (
     <div className="rounded-xl border border-mist p-5">
       <p className="label-small mb-3">Ask a question</p>
-      {isMinor && <p className="text-xs text-graphite mb-3">This racer is under 18 — your message goes to their guardian, not to them directly.</p>}
+      {isMinor && <p className="text-xs text-graphite mb-3">This racer is under 18. Your message goes to their guardian, not to them directly.</p>}
       <textarea
         className="w-full h-20 border border-mist rounded-lg p-3 text-sm mb-3"
         value={body}

@@ -24,7 +24,7 @@ export default async function MessagesInboxPage() {
               <Link href={`/dashboard/messages/${thread.id}`} className="block rounded-lg border border-mist p-4 hover:border-ink transition-colors">
                 <p className="font-medium">
                   {racer.firstName} {racer.lastName}
-                  {thread.guardianUserId && <span className="text-xs text-graphite ml-2">(routed to guardian — minor racer)</span>}
+                  {thread.guardianUserId && <span className="text-xs text-graphite ml-2">(routed to guardian, minor racer)</span>}
                 </p>
               </Link>
             </li>

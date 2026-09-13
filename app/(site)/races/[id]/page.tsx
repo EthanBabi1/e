@@ -13,13 +13,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const data = await getRaceBySessionId(id);
   if (!data || !data.event || !data.track) return {};
   return {
-    title: `${data.track.name} — ${data.event.name} ${data.session.className} ${data.session.type} | ${CONFIG.platformName}`,
+    title: `${data.track.name}: ${data.event.name} ${data.session.className} ${data.session.type} | ${CONFIG.platformName}`,
     description: `Full results for the ${data.session.className} ${data.session.type} at ${data.event.name}, ${data.track.name}, ${data.event.date}.`,
   };
 }
 
 function formatLap(ms: number | null): string {
-  if (ms == null) return "—";
+  if (ms == null) return "N/A";
   return (ms / 1000).toFixed(3) + "s";
 }
 
@@ -34,7 +34,7 @@ export default async function RacePage({ params }: { params: Promise<{ id: strin
         data={{
           "@context": "https://schema.org",
           "@type": "SportsEvent",
-          name: `${data.event.name} — ${data.session.className} ${data.session.type}`,
+          name: `${data.event.name}: ${data.session.className} ${data.session.type}`,
           startDate: data.event.date,
           location: { "@type": "Place", name: data.track.name },
         }}
@@ -43,7 +43,7 @@ export default async function RacePage({ params }: { params: Promise<{ id: strin
         {data.track.name} · {data.event.date}
       </p>
       <h1 className="font-display text-4xl mb-8">
-        {data.session.className} — {data.session.type === "race" ? "Race" : data.session.type === "qualifying" ? "Qualifying" : "Practice"}
+        {data.session.className}: {data.session.type === "race" ? "Race" : data.session.type === "qualifying" ? "Qualifying" : "Practice"}
         {data.session.name ? ` (${data.session.name})` : ""}
       </h1>
 

@@ -35,7 +35,7 @@ export default async function AdminMetricsPage() {
   const [trackCount] = await db.select({ count: sql<number>`count(*)` }).from(tracks);
   const [activeListingCount] = await db.select({ count: sql<number>`count(*)` }).from(zoneListings).where(sql`${zoneListings.isActive} = true`);
 
-  const claimRate = racerCount.count > 0 ? ((claimedCount.count / racerCount.count) * 100).toFixed(1) : "—";
+  const claimRate = racerCount.count > 0 ? ((claimedCount.count / racerCount.count) * 100).toFixed(1) : "N/A";
 
   const rows = [
     { label: "Ghost profiles created", value: ghostProfilesCreated, done: true },
@@ -45,11 +45,11 @@ export default async function AdminMetricsPage() {
     { label: "Results published (event log)", value: resultsPublished, done: true },
     { label: "Tracks", value: trackCount.count, done: true },
     { label: "Zones listed (active)", value: activeListingCount.count, done: true },
-    { label: "First zone listed → first sale, time to first sale", value: "—", done: false, note: "needs Phase 5 checkout" },
-    { label: "Free → Pro conversion, Pro renewal", value: "—", done: false, note: "needs Phase 5 subscriptions" },
-    { label: "GMV, take-rate revenue, subscription MRR", value: "—", done: false, note: "needs Phase 5 payments" },
-    { label: "Repeat sponsorship rate, sponsor retention", value: "—", done: false, note: "needs Phase 5 sponsorships" },
-    { label: "Racer retention season over season", value: "—", done: false, note: "needs a second season of real data" },
+    { label: "First zone listed to first sale, time to first sale", value: "N/A", done: false, note: "needs Phase 5 checkout" },
+    { label: "Free to Pro conversion, Pro renewal", value: "N/A", done: false, note: "needs Phase 5 subscriptions" },
+    { label: "GMV, take-rate revenue, subscription MRR", value: "N/A", done: false, note: "needs Phase 5 payments" },
+    { label: "Repeat sponsorship rate, sponsor retention", value: "N/A", done: false, note: "needs Phase 5 sponsorships" },
+    { label: "Racer retention season over season", value: "N/A", done: false, note: "needs a second season of real data" },
   ];
 
   return (

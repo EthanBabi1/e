@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       {
         price_data: {
           currency: "usd",
-          product_data: { name: `${zone.name} — ${racer.firstName} ${racer.lastName.charAt(0)}.` },
+          product_data: { name: `${zone.name}, ${racer.firstName} ${racer.lastName.charAt(0)}.` },
           unit_amount: Math.round(listing.priceUsd * 100),
         },
         quantity: 1,

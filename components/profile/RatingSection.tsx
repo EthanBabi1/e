@@ -49,12 +49,12 @@ export function PrivateRatingWidget({
   return (
     <div className="rounded-xl border border-mist p-4">
       <p className="label-small mb-1">
-        {className} rating {isProvisional && "— provisional"}
+        {className} rating {isProvisional && "(provisional)"}
       </p>
       <p className="font-mono-tabular text-2xl">{confidenceBandLabel({ mu, sigma, rankedResultCount })}</p>
       {isProvisional && (
         <p className="text-xs text-graphite mt-1">
-          {rankedResultCount} of {threshold} ranked results — this settles and goes public once you clear the threshold.
+          {rankedResultCount} of {threshold} ranked results. This settles and goes public once you clear the threshold.
         </p>
       )}
     </div>

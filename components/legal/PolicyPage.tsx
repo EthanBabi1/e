@@ -5,7 +5,7 @@ export function PolicyPage({ policy }: { policy: PolicyDoc }) {
     <main className="max-w-2xl mx-auto px-6 py-16">
       {policy.needsLegalReview && (
         <div className="rounded-xl bg-accent-soft text-accent text-sm px-4 py-3 mb-8">
-          Placeholder — requires legal review before launch. Nothing here should be treated as finalized legal terms.
+          Placeholder: requires legal review before launch. Nothing here should be treated as finalized legal terms.
         </div>
       )}
       <p className="label-small mb-2">Version {policy.version}</p>

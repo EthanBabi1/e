@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const track = await getTrackBySlug(slug);
   if (!track) return {};
   return {
-    title: `${track.name} — track records, results & roster | ${CONFIG.platformName}`,
-    description: `${track.name}${track.city ? ` in ${track.city}${track.region ? `, ${track.region}` : ""}` : ""} — verified results, track records, and the racers building their record here.`,
+    title: `${track.name}: track records, results & roster | ${CONFIG.platformName}`,
+    description: `${track.name}${track.city ? ` in ${track.city}${track.region ? `, ${track.region}` : ""}` : ""}: verified results, track records, and the racers building their record here.`,
   };
 }
 
@@ -91,7 +91,7 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
                 <span className="text-graphite">
                   {r.eventDate} · {r.className}
                 </span>
-                <span className="tabular">P{r.position ?? "—"}</span>
+                <span className="tabular">{r.position != null ? `P${r.position}` : "N/A"}</span>
               </li>
             ))}
           </ul>
@@ -101,7 +101,7 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
           <EmptyState
             eyebrow={track.name}
             title="Results haven't been published here yet"
-            body="Once this track's results are verified, they'll show up here — and every racer's own page — automatically."
+            body="Once this track's results are verified, they'll show up here (and every racer's own page) automatically."
           />
         </div>
       )}

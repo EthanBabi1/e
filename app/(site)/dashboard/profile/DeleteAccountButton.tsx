@@ -21,7 +21,7 @@ export function DeleteAccountButton({ racerId, isMinor }: { racerId: string; isM
       <p className="text-sm text-graphite mt-8">
         {done.immediate
           ? "Deleted immediately, in full."
-          : "Deletion requested — this profile is suspended now and will be permanently purged in 90 days unless you contact us to restore it."}
+          : "Deletion requested: this profile is suspended now and will be permanently purged in 90 days unless you contact us to restore it."}
       </p>
     );
   }
@@ -36,7 +36,7 @@ export function DeleteAccountButton({ racerId, isMinor }: { racerId: string; isM
         <div className="rounded-lg bg-accent-soft p-4 text-sm">
           <p className="mb-3">
             {isMinor
-              ? "This deletes this profile immediately and completely — results, story, photo, messages. This cannot be undone."
+              ? "This deletes this profile immediately and completely: results, story, photo, messages. This cannot be undone."
               : "This suspends the profile now; it's fully purged after 90 days unless restored. Results, story, photo, and messages are all included."}
           </p>
           <div className="flex gap-2">

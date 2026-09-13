@@ -3,7 +3,7 @@ import { ProvenanceBadge } from "@/components/ui/ProvenanceBadge";
 import type { SeasonResultRow } from "@/lib/telemetry";
 
 function formatLap(ms: number | null): string {
-  if (ms == null) return "—";
+  if (ms == null) return "N/A";
   return (ms / 1000).toFixed(3) + "s";
 }
 
@@ -93,7 +93,7 @@ export function FormGuideStrip({ results }: { results: SeasonResultRow[] }) {
           className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium tabular ${
             r.position! <= 3 ? "bg-accent text-paper" : "bg-marble text-graphite"
           }`}
-          title={`${r.trackName} — P${r.position}`}
+          title={`${r.trackName}, P${r.position}`}
         >
           P{r.position}
         </span>

@@ -349,10 +349,10 @@ export function ImportWizard({ tracks }: { tracks: Track[] }) {
       {method === "mylaps" && (
         <div className="marble-surface rounded-xl p-6">
           {mylapsEnabled ? (
-            <p className="text-sm text-graphite">MYLAPS import is enabled — enter your transponder number on your dashboard&apos;s sync settings.</p>
+            <p className="text-sm text-graphite">MYLAPS import is enabled: enter your transponder number on your dashboard&apos;s sync settings.</p>
           ) : (
             <p className="text-sm text-graphite">
-              MYLAPS transponder import isn&apos;t turned on for this platform yet (see <code>DATA-ACCESS.md</code>) — use a photo, CSV, or
+              MYLAPS transponder import isn&apos;t turned on for this platform yet (see <code>DATA-ACCESS.md</code>). Use a photo, CSV, or
               manual entry instead for now.
             </p>
           )}

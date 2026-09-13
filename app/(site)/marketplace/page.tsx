@@ -18,14 +18,14 @@ export default async function MarketplacePage() {
       <p className="label-small mb-2">Marketplace</p>
       <h1 className="font-display text-4xl mb-2">Sponsor a racer near you</h1>
       <p className="text-graphite mb-10 max-w-xl">
-        Every listing here is backed by a verified racer record — not a self-reported claim.
+        Every listing here is backed by a verified racer record, not a self-reported claim.
       </p>
 
       {listings.length === 0 ? (
         <EmptyState
           eyebrow={CONFIG.launchTrack}
           title={`The first racers at ${CONFIG.launchTrack}`}
-          body="Nobody has listed a zone here yet — the first racer to list one gets first pick of visibility."
+          body="Nobody has listed a zone here yet. The first racer to list one gets first pick of visibility."
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">

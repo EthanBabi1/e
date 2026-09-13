@@ -34,7 +34,7 @@ export default function RemovePage() {
     <main className="max-w-md mx-auto px-6 py-24">
       <h1 className="font-display text-3xl mb-2">Request a profile be removed</h1>
       <p className="text-graphite mb-8 text-sm">
-        For an unclaimed profile you don&apos;t control — no account needed, no explanation required. We honor these within 48 hours.
+        For an unclaimed profile you don&apos;t control. No account needed, no explanation required. We honor these within 48 hours.
       </p>
       <div className="space-y-4">
         <input

@@ -38,7 +38,7 @@ export function ThreadView({
         return;
       }
       if (data.status === "rate_limited") {
-        setError("You're sending messages too quickly — try again in a few minutes.");
+        setError("You're sending messages too quickly. Try again in a few minutes.");
         return;
       }
       setMessages((m) => [...m, { id: data.messageId, senderUserId: currentUserId, body: draft, createdAt: new Date() }]);

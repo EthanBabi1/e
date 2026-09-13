@@ -57,8 +57,8 @@ export function ZonesManager({ zonesWithListings, isMinor }: { zonesWithListings
             {activeListing ? (
               <p className="text-sm">
                 ${activeListing.priceUsd}
-                {isMinor && !activeListing.guardianApprovedAt && <span className="text-graphite"> — pending guardian approval</span>}
-                {activeListing.isActive && <span className="text-accent"> — live</span>}
+                {isMinor && !activeListing.guardianApprovedAt && <span className="text-graphite"> · pending guardian approval</span>}
+                {activeListing.isActive && <span className="text-accent"> · live</span>}
               </p>
             ) : (
               <div className="flex gap-2">
