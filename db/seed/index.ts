@@ -10,6 +10,7 @@ import { mulberry32, pick, randInt } from "./rng";
 import { inferIsMinor } from "@/lib/minors";
 import { recomputeAllRatings } from "@/lib/ratings/recompute";
 import { sql } from "drizzle-orm";
+import { CONFIG } from "@/lib/config";
 
 const rng = mulberry32(42);
 
@@ -212,6 +213,12 @@ async function clearAll() {
 async function main() {
   console.log("Clearing existing data...");
   await clearAll();
+
+  console.log("Seeding the platform admin account...");
+  await db
+    .insert(users)
+    .values({ email: CONFIG.ownerEmail, name: "Platform admin", role: "admin", isPlatformAdmin: true })
+    .onConflictDoUpdate({ target: users.email, set: { isPlatformAdmin: true, role: "admin" } });
 
   console.log("Seeding policy versions...");
   for (const policy of [...POLICIES, MINOR_DISPLAY_CONSENT]) {

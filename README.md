@@ -2,7 +2,7 @@
 
 Grassroots kart racing results + sponsorship marketplace. Built per the phased brief; see `PLAN.md`, `DESIGN.md`, `COMPLIANCE.md`, `DATA-ACCESS.md`, `DECISIONS.md`, `REVIEW.md`, `OPEN-QUESTIONS.md`.
 
-**Status:** in progress — phases are committed as they land. This README is updated at each phase boundary; the setup steps below reflect what's actually runnable at the current commit, not the finished product.
+**Status:** all 6 phases complete. This README describes what's actually runnable at the current commit — see the closing report in the final commit message, and `REVIEW.md`, for an honest list of what still needs real credentials or a second look before a real launch.
 
 ## Quick start
 
@@ -15,7 +15,7 @@ pnpm db:seed                 # 2 fictional tracks, 40 racers, a season of result
 pnpm dev
 ```
 
-Visit `http://localhost:3000/style` for the rendered design system and `http://localhost:3000/admin` for the (currently unauthenticated — see PLAN.md) data-verification view.
+Visit `http://localhost:3000/style` for the rendered design system and `http://localhost:3000/demo` for the one fully populated fictional profile. `/admin` and everything under it now requires a real signed-in admin account (see Phase 6 below) — the seed script grants admin to `CONFIG.ownerEmail` automatically.
 
 ## Database
 
@@ -66,7 +66,7 @@ Export a racer's full record any time: `GET /api/export/:racerId/csv` and `/pdf`
 - `/demo` — the one fully populated fictional racer (`demo-jordan-vance`), rendered through the exact same components as a real profile.
 - `/api/og/racer/[slug]` — share card images (never generated for an unclaimed minor).
 - `/sitemap.xml`, `/robots.txt` — sitemap excludes every noindexed (unclaimed-minor) profile.
-- `/admin/metrics` — funnel dashboard (unauthenticated dev route — see caveat above for `/admin`).
+- `/admin/metrics` — funnel dashboard (real admin-gated route as of Phase 6 — see below).
 
 ## Accounts, messaging, notifications (Phase 4)
 
@@ -88,15 +88,24 @@ Every dollar amount anywhere in this codebase is Stripe **test mode**. `lib/conf
 - **Payouts**: `/dashboard` → "Set up payouts" starts Stripe Connect Express onboarding. A minor's payout account always belongs to their guardian — there is no code path that creates one naming a minor.
 - **Subscriptions**: `/dashboard/upgrade` shows the live Pro-vs-free savings math against the racer's actual sponsorship volume this season, and is honest when Pro isn't worth it yet.
 - **Withdrawals**: `lib/sponsorships/withdrawal.ts` computes a pro-rata refund or sponsor credit for a mid-term cancellation — wired as a function, not yet exposed in any UI (see `REVIEW.md`).
-- **Cron** (called directly for now; wired to Vercel Cron in Phase 6): `POST /api/cron/escrow-release` and `POST /api/cron/auction-close`, both requiring `Authorization: Bearer $CRON_SECRET`.
 - **Webhook**: `POST /api/stripe/webhook`. For local testing once you have a Stripe test key: `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
 
-## Full setup (filled in as each phase lands)
+## Tracks, admin console, account deletion (Phase 6)
 
-- **Database / migrations / seed** — done, Phase 1 (above).
-- **Results ingest** — done, Phase 2 (above).
-- **Public surface** — done, Phase 3 (above).
-- **Auth / accounts / messaging / notifications / legal pages** — done, Phase 4 (above).
-- **Money (Connect, checkout, escrow, subscriptions)** — done, Phase 5 (above) — but see `REVIEW.md` #21: none of it has touched a live Stripe API call yet.
-- **Cron jobs on an actual schedule** — added in Phase 6 (routes exist now, callable directly).
-- **Deploy** — Vercel; live payment keys are never used (test mode only, everywhere — see `lib/config.ts`, which refuses to boot Stripe with a non-`sk_test_`/`pk_test_` key).
+- **Track portal**: `/track-portal/[slug]` — a track claims its own page (`/api/tracks/claim`), then sees its revenue, championship standings (with drop-scores), an embeddable leaderboard snippet, and its roster. `/embed/tracks/[slug]` is the actual embeddable widget the snippet points at — deliberately outside the main `(site)` route group, so it renders with no header/nav for a clean iframe.
+- **Admin console**: everything under `/admin` (dashboard, metrics, moderation, withdrawals, series-sponsorships, impersonate-search) now requires a real signed-in account with `isPlatformAdmin` set — `requireAdmin()` for pages, `requireAdminApiWithAudit()` for API routes, the latter writing an `audit_log` row before the action runs. `/admin/impersonate` is search-only (finds the account a support request is about); it does not issue a working session-swap — see `REVIEW.md` #27.
+- **Account deletion**: a "Delete this profile" control on `/dashboard/profile`. A guardian deleting their minor's profile purges everything — results, laps, messages, claims, profile PII — immediately (`lib/accounts/deletion.ts`); an adult deleting their own goes into a 90-day restorable hold first, then the same purge. A racer with retained sponsorship history survives as a scrubbed tombstone (no name/photo/story/results) rather than being removed outright, since financial records can't be hard-deleted while retention obligations exist. Covered end-to-end by `tests/integration/account-deletion.test.ts`.
+- **Public takedown request**: `/remove` — no account needed, for anyone (including someone who never signed up) asking to have a profile taken down.
+- **Cron, on an actual schedule** (`vercel.json`), each requiring `Authorization: Bearer $CRON_SECRET`: `/api/cron/auction-close` (every 15 min), `/api/cron/escrow-release` (hourly), `/api/cron/digests` and `/api/cron/track-revenue-share` (monthly), `/api/cron/deletion-sweep` (daily, purges 90-day-elapsed deletion requests).
+
+## Full setup
+
+- **Database / migrations / seed** — done, Phase 1.
+- **Results ingest** — done, Phase 2.
+- **Public surface** — done, Phase 3.
+- **Auth / accounts / messaging / notifications / legal pages** — done, Phase 4.
+- **Money (Connect, checkout, escrow, subscriptions)** — done, Phase 5 — but see `REVIEW.md` #21: none of it has touched a live Stripe API call yet, for lack of a test key in this environment.
+- **Tracks, admin console, account deletion, scheduled cron** — done, Phase 6 (above).
+- **Deploy** — Vercel; live payment keys are never used (test mode only, everywhere — see `lib/config.ts`, which refuses to boot Stripe with a non-`sk_test_`/`pk_test_` key). No live deploy has been made from this build.
+
+See `REVIEW.md` for the full, honest list of what needs real credentials (Stripe, Resend, Google OAuth, Anthropic, object storage) or a second look (legal copy, real photos, a security pass on impersonation) before this goes live with real people's data.

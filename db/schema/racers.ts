@@ -39,4 +39,13 @@ export const racers = pgTable("racers", {
 
   isFictionalDemo: boolean("is_fictional_demo").notNull().default(false),
   createdAt: createdAtColumn(),
+
+  // Section 3: "Deleted accounts hold for 90 days with a restore path,
+  // then purge. Deletion requests from a guardian on behalf of a minor
+  // execute immediately." `deletionRequestedAt` set + `deletedAt` null =
+  // suspended, in the restorable hold window. Both set = purged (see
+  // lib/accounts/deletion.ts) — the row survives as a scrubbed tombstone
+  // only when a retained sponsorship record still references it.
+  deletionRequestedAt: timestamp("deletion_requested_at", { withTimezone: true }),
+  deletedAt: timestamp("deleted_at", { withTimezone: true }),
 });

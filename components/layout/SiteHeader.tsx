@@ -7,11 +7,11 @@ export async function SiteHeader() {
 
   return (
     <header className="border-b border-mist">
-      <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="font-display text-lg">
+      <div className="max-w-5xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <Link href="/" className="font-display text-lg whitespace-nowrap">
           {CONFIG.platformName}
         </Link>
-        <nav className="flex items-center gap-5 text-sm">
+        <nav className="flex items-center flex-wrap gap-x-4 gap-y-1 text-sm">
           <Link href="/marketplace" className="text-graphite hover:text-ink">
             Marketplace
           </Link>

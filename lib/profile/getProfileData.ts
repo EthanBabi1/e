@@ -4,10 +4,14 @@ import { racers, ratings, tracks, zoneListings, zones } from "@/db/schema";
 import { racerPublicView, type RawRacerRecord } from "@/lib/minors";
 import { getRacerResults, getLapProgression, getClassMedianBestLapMs, consistencyStdevMs } from "@/lib/telemetry";
 import { computeHeadlineStats } from "@/lib/profile/headlineStats";
+import { isAccessible } from "@/lib/accounts/deletion";
 
 export async function getProfileDataBySlug(slug: string) {
   const [racer] = await db.select().from(racers).where(eq(racers.slug, slug));
   if (!racer) return null;
+  // Section 3: a pending-deletion or purged account is never shown
+  // publicly again, even by direct link.
+  if (!isAccessible(racer)) return null;
   return getProfileDataForRacer(racer);
 }
 

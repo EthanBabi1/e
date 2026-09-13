@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { racers, tracks } from "@/db/schema";
 import { racerPublicView, type RawRacerRecord } from "@/lib/minors";
+import { isAccessible } from "@/lib/accounts/deletion";
 
 const SIMILARITY_THRESHOLD = 0.25;
 
@@ -45,10 +46,12 @@ export async function searchRacers(query: string, limit = 10): Promise<RacerSear
       ) desc`)
     .limit(limit);
 
-  return rows.map((r) => ({
-    racer: racerPublicView(r.racer as unknown as RawRacerRecord),
-    similarity: r.similarity,
-  }));
+  return rows
+    .filter((r) => isAccessible(r.racer))
+    .map((r) => ({
+      racer: racerPublicView(r.racer as unknown as RawRacerRecord),
+      similarity: r.similarity,
+    }));
 }
 
 export async function searchTracks(query: string, limit = 5) {

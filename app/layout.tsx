@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { CONFIG } from "@/lib/config";
-import { SiteHeader } from "@/components/layout/SiteHeader";
-import { LenisProvider } from "@/components/motion/LenisProvider";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -29,6 +27,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(`https://${CONFIG.domain}`),
 };
 
+/**
+ * Deliberately minimal — fonts and the design-token stylesheet only. The
+ * site chrome (nav header, smooth-scroll) lives in app/(site)/layout.tsx
+ * so that app/embed/* routes (section 5's embeddable widget) render
+ * without a track's page inheriting our own navigation inside their
+ * iframe.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,10 +44,7 @@ export default function RootLayout({
       <body
         className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased bg-paper text-ink`}
       >
-        <LenisProvider>
-          <SiteHeader />
-          {children}
-        </LenisProvider>
+        {children}
       </body>
     </html>
   );

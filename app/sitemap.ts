@@ -3,6 +3,7 @@ import { db } from "@/db/client";
 import { racers, tracks } from "@/db/schema";
 import { CONFIG } from "@/lib/config";
 import { racerPublicView, type RawRacerRecord } from "@/lib/minors";
+import { isAccessible } from "@/lib/accounts/deletion";
 
 /**
  * Section 3 hard limit, tested in tests/integration/sitemap.test.ts: no
@@ -17,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const allRacers = await db.select().from(racers);
   const indexableRacers = allRacers
+    .filter((r) => isAccessible(r))
     .map((r) => racerPublicView(r as unknown as RawRacerRecord))
     .filter((view) => !view.noindex);
 
