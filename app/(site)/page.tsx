@@ -4,6 +4,7 @@ import { getHomeStats } from "@/lib/home/getHomeStats";
 import { Reveal } from "@/components/motion/Reveal";
 import { CountUp } from "@/components/motion/CountUp";
 import { MagneticButton } from "@/components/motion/MagneticButton";
+import { SpeedLines } from "@/components/motion/SpeedLines";
 
 export const dynamic = "force-dynamic";
 
@@ -34,36 +35,44 @@ export default async function Home() {
 
   return (
     <main>
-      <section className="max-w-3xl mx-auto px-6 pt-20 pb-16">
-        <Reveal>
-          <p className="label-small mb-4">{CONFIG.launchTrack}</p>
-        </Reveal>
-        <Reveal index={1}>
-          <h1 className="font-display text-5xl sm:text-6xl mb-6 text-balance">
-            Your results are real.<br />Your sponsorship should be too.
-          </h1>
-        </Reveal>
-        <Reveal index={2}>
-          <p className="text-graphite mb-8 max-w-xl">
-            {CONFIG.platformName} turns a grassroots kart racer&apos;s verified race record into a
-            profile local businesses can actually sponsor. No paid placement, no invented
-            rankings, ever.
-          </p>
-        </Reveal>
-        <Reveal index={3}>
-          <div className="flex flex-wrap gap-3">
-            <MagneticButton href="/demo">See a finished profile</MagneticButton>
-            <Link
-              href="/marketplace"
-              className="inline-flex items-center justify-center rounded-full border border-mist px-6 py-3 text-sm font-medium hover:border-ink transition-colors"
-            >
-              Browse sponsorable racers
-            </Link>
-          </div>
-        </Reveal>
+      <section className="relative overflow-hidden bg-ink text-paper">
+        <SpeedLines className="absolute -top-4 right-0 w-[280px] sm:w-[460px] h-auto opacity-90 pointer-events-none" />
+        <div className="relative max-w-3xl mx-auto px-6 pt-24 pb-20">
+          <Reveal>
+            <p className="text-[11px] tracking-[0.12em] uppercase text-silver mb-4">{CONFIG.launchTrack}</p>
+          </Reveal>
+          <Reveal index={1}>
+            <h1 className="font-display text-5xl sm:text-7xl mb-6 text-balance">
+              Your results are real.<br />Your <span className="text-accent">sponsorship</span> should be too.
+            </h1>
+          </Reveal>
+          <Reveal index={2}>
+            <p className="text-silver mb-9 max-w-xl text-lg">
+              {CONFIG.platformName} turns a grassroots kart racer&apos;s verified race record into a
+              profile local businesses can actually sponsor. No paid placement, no invented
+              rankings, ever.
+            </p>
+          </Reveal>
+          <Reveal index={3}>
+            <div className="flex flex-wrap gap-4">
+              <MagneticButton
+                href="/demo"
+                className="inline-flex items-center justify-center rounded-full bg-accent text-paper px-7 py-3.5 text-sm font-medium"
+              >
+                See a finished profile
+              </MagneticButton>
+              <Link
+                href="/marketplace"
+                className="inline-flex items-center justify-center rounded-full border border-paper/25 text-paper px-7 py-3.5 text-sm font-medium hover:border-paper transition-colors"
+              >
+                Browse sponsorable racers
+              </Link>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
-      <section className="border-y border-mist bg-marble">
+      <section className="bg-accent text-paper">
         <div className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
           {[
             { label: "Racer profiles", value: stats.racerCount },
@@ -72,8 +81,8 @@ export default async function Home() {
             { label: "Open sponsorships", value: stats.activeListingCount },
           ].map((stat, i) => (
             <Reveal key={stat.label} index={i}>
-              <CountUp value={stat.value} className="font-display text-3xl block" />
-              <p className="label-small mt-1">{stat.label}</p>
+              <CountUp value={stat.value} className="font-display text-4xl block" />
+              <p className="text-[11px] tracking-[0.12em] uppercase text-paper/75 mt-1">{stat.label}</p>
             </Reveal>
           ))}
         </div>
@@ -97,7 +106,7 @@ export default async function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-6">
           {HOW_IT_WORKS.map((step, i) => (
             <Reveal key={step.title} index={i}>
-              <p className="font-display text-2xl mb-2">{i + 1}</p>
+              <p className="font-display text-4xl mb-3 text-accent">{i + 1}</p>
               <p className="font-medium mb-2">{step.title}</p>
               <p className="text-graphite text-sm">{step.body}</p>
             </Reveal>
@@ -105,35 +114,38 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="border-t border-mist">
-        <div className="max-w-5xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-3 gap-8">
-          <Reveal>
-            <p className="font-medium mb-2">Racing, or a parent?</p>
-            <p className="text-graphite text-sm mb-4">
-              Claim your profile, or your racer&apos;s, and start building a real record.
-            </p>
-            <Link href="/for-parents" className="accent-underline text-sm">
-              Read this first if your racer is under 18 →
-            </Link>
-          </Reveal>
-          <Reveal index={1}>
-            <p className="font-medium mb-2">A local business?</p>
-            <p className="text-graphite text-sm mb-4">
-              Sponsor a specific racer near you, at a price that&apos;s fair on both sides.
-            </p>
-            <Link href="/marketplace" className="accent-underline text-sm">
-              Browse open sponsorships →
-            </Link>
-          </Reveal>
-          <Reveal index={2}>
-            <p className="font-medium mb-2">Run a track?</p>
-            <p className="text-graphite text-sm mb-4">
-              Free championship standings, results hosting, and an embeddable leaderboard for your own site.
-            </p>
-            <Link href="/tracks" className="accent-underline text-sm">
-              Find your track →
-            </Link>
-          </Reveal>
+      <section className="border-t border-mist bg-marble">
+        <div className="max-w-5xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {[
+            {
+              title: "Racing, or a parent?",
+              body: "Claim your profile, or your racer's, and start building a real record.",
+              href: "/for-parents",
+              cta: "Read this first if your racer is under 18",
+            },
+            {
+              title: "A local business?",
+              body: "Sponsor a specific racer near you, at a price that's fair on both sides.",
+              href: "/marketplace",
+              cta: "Browse open sponsorships",
+            },
+            {
+              title: "Run a track?",
+              body: "Free championship standings, results hosting, and an embeddable leaderboard for your own site.",
+              href: "/tracks",
+              cta: "Find your track",
+            },
+          ].map((card, i) => (
+            <Reveal key={card.title} index={i}>
+              <div className="bg-paper rounded-2xl border border-mist border-t-4 border-t-accent p-6 h-full">
+                <p className="font-medium mb-2">{card.title}</p>
+                <p className="text-graphite text-sm mb-4">{card.body}</p>
+                <Link href={card.href} className="accent-underline text-sm">
+                  {card.cta} →
+                </Link>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
     </main>
