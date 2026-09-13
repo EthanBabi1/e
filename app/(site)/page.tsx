@@ -58,16 +58,16 @@ export default async function Home() {
             <div className="flex flex-wrap gap-4">
               <MagneticButton
                 href="/demo"
-                className="inline-flex items-center justify-center rounded-full bg-accent text-paper px-7 py-3.5 text-sm font-medium"
+                className="glass-button glass-button-accent inline-flex items-center justify-center rounded-full text-ink px-7 py-3.5 text-sm font-medium"
               >
                 See a finished profile
               </MagneticButton>
-              <Link
+              <MagneticButton
                 href="/marketplace"
-                className="inline-flex items-center justify-center rounded-full border border-paper/25 text-paper px-7 py-3.5 text-sm font-medium hover:border-paper transition-colors"
+                className="glass-button inline-flex items-center justify-center rounded-full text-ink px-7 py-3.5 text-sm font-medium"
               >
                 Browse sponsorable racers
-              </Link>
+              </MagneticButton>
             </div>
           </Reveal>
         </div>
@@ -117,8 +117,18 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="border-t border-mist bg-marble">
-        <div className="max-w-5xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <section className="relative border-t border-mist py-16 overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute -top-20 left-1/4 w-96 h-96 rounded-full opacity-40 blur-3xl pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(200,16,46,0.25) 0%, transparent 70%)" }}
+        />
+        <div
+          aria-hidden
+          className="absolute -bottom-24 right-1/4 w-96 h-96 rounded-full opacity-30 blur-3xl pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(10,10,11,0.15) 0%, transparent 70%)" }}
+        />
+        <div className="relative max-w-5xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
           {[
             {
               title: "Racing, or a parent?",
@@ -140,7 +150,7 @@ export default async function Home() {
             },
           ].map((card, i) => (
             <Reveal key={card.title} index={i}>
-              <div className="bg-paper rounded-2xl border border-mist border-t-4 border-t-accent p-6 h-full">
+              <div className="glass rounded-2xl p-6 h-full">
                 <p className="font-medium mb-2">{card.title}</p>
                 <p className="text-graphite text-sm mb-4">{card.body}</p>
                 <Link href={card.href} className="accent-underline text-sm">

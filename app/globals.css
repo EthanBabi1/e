@@ -13,8 +13,14 @@
   --accent-soft: #FDF2F3;
   --glass-bg: rgba(255, 255, 255, 0.62);
   --glass-border: rgba(255, 255, 255, 0.8);
+  /* Liquid-glass system: a real elevated material (edge highlight, inner
+     shadow for thickness, exterior shadow for elevation), not a flat
+     translucent rectangle. Used deliberately — glass is a scalpel like
+     --accent is: the floating nav, primary CTAs, a handful of key cards.
+     Not every container on the page. */
+  --glass-shadow: rgba(10, 10, 11, 0.16);
 
-  --background: var(--paper);
+  --background: #FFFFFF;
   --foreground: var(--ink);
 }
 
@@ -64,10 +70,71 @@ body {
   color: var(--silver);
 }
 
+/* Liquid-glass material. Layered like real glass: a lighter wash top-left
+   (light source), a darker wash bottom-right (thickness/falloff), a thin
+   bright edge, an inner top highlight, an inner bottom shadow for depth,
+   and a soft exterior shadow for elevation — not one flat translucent fill. */
 .glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
+  position: relative;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.78) 0%, var(--glass-bg) 55%, rgba(255, 255, 255, 0.38) 100%);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(10, 10, 11, 0.06),
+    0 14px 34px -10px var(--glass-shadow),
+    0 3px 10px -3px rgba(10, 10, 11, 0.1);
+}
+
+.glass-button {
+  position: relative;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.48) 60%, rgba(255, 255, 255, 0.3) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(10, 10, 11, 0.08),
+    0 10px 24px -8px var(--glass-shadow),
+    0 2px 8px -2px rgba(10, 10, 11, 0.1);
+  transition: transform 240ms ease, box-shadow 240ms ease, filter 240ms ease, border-color 240ms ease;
+}
+.glass-button:hover {
+  transform: scale(1.02);
+  filter: brightness(1.04);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 1px rgba(10, 10, 11, 0.08),
+    0 16px 32px -8px var(--glass-shadow),
+    0 4px 12px -2px rgba(10, 10, 11, 0.14);
+}
+.glass-button:active {
+  transform: scale(0.98);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 1px rgba(10, 10, 11, 0.08),
+    0 5px 14px -6px rgba(10, 10, 11, 0.16);
+}
+
+/* Accent-tinted variant for the single primary CTA per view — same glass
+   physics, a faint warm tint instead of neutral white. */
+.glass-button-accent {
+  background: linear-gradient(155deg, rgba(255, 235, 237, 0.88) 0%, rgba(255, 220, 224, 0.55) 55%, rgba(200, 16, 46, 0.16) 100%);
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.glass-nav {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.52) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(10, 10, 11, 0.05),
+    0 12px 30px -10px var(--glass-shadow),
+    0 2px 8px -2px rgba(10, 10, 11, 0.08);
 }
 
 .marble-surface {
