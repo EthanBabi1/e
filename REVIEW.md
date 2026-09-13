@@ -28,4 +28,13 @@ Ordered by what blocks launch soonest. Every item here is either a stub to repla
 13. **Structured data (JSON-LD) covers Person/SportsOrganization/SportsEvent** per the DoD list, but hasn't been validated against Google's Rich Results Test — worth a pass before launch.
 14. **The admin dashboard and results-import wizard remain unauthenticated dev routes** (same caveat as Phase 1's `/admin`) — real auth/role gating is Phase 4's job. Do not deploy this build's current `/admin`, `/admin/metrics`, or `/dashboard/*` routes to a public URL as-is.
 
+## Phase 4
+
+15. **No real auth provider credentials.** Auth.js is fully wired (Resend magic-link + Google OAuth, database sessions, role on session), but with neither `AUTH_RESEND_KEY` nor `AUTH_GOOGLE_ID`/`AUTH_GOOGLE_SECRET` set, `/sign-in` has nothing to offer — it says so plainly rather than showing a broken button. Supply one before anyone can actually sign in.
+16. **Account deletion (the guardian-immediate-deletion promise in `COMPLIANCE.md` and `/for-parents`) is not built yet.** This is a real gap between what the product tells a parent and what the code does today — prioritize this before real minors' data is on the platform, not just before general launch.
+17. **`/admin`'s stated ability to "read minor-involved threads" with an audit-log entry is not built** — there is no admin thread-reading UI yet at all (Phase 6's admin console). Don't claim this capability exists in any user-facing copy until it is.
+18. **The messaging contact-info filter is a regex heuristic**, not a trained classifier — it will have both false positives (an innocuous number that happens to look phone-shaped) and false negatives (a cleverly obfuscated contact exchange, e.g. "five five five..." spelled out). Good enough as a first line of defense, not a guarantee. Revisit if circumvention turns out to be common.
+19. **Guardian identity is self-declared at claim time** (a relationship dropdown + a consent checkbox), with no third-party ID/KYC verification — see the comment in `lib/accounts/claim.ts`. This is a real gap in "guardian verification for minors" as literally read; closing it needs an actual identity-verification service, which has its own cost/vendor decision.
+20. **Message/notification emails only actually send with a `RESEND_API_KEY`** — without one, everything still lands in the in-app notification centre, but no email goes out (a console warning names each skipped send). Same missing-credential pattern as items 6 and 15.
+
 (This file is appended to at each phase boundary as stubs, credentials, and legal-review items accumulate. See phase-boundary commits for the running list.)

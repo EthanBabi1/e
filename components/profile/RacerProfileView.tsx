@@ -4,6 +4,7 @@ import { RecordTable, FormGuideStrip } from "./RecordTable";
 import { TelemetryChart } from "./TelemetryChart";
 import { PublicRatingSection } from "./RatingSection";
 import { Storefront } from "./Storefront";
+import { EnquiryForm } from "./EnquiryForm";
 import { EmptyState } from "@/components/ui/EmptyState";
 import type { ProfileData } from "@/lib/profile/getProfileData";
 import { CONFIG } from "@/lib/config";
@@ -29,6 +30,10 @@ export function RacerProfileView({ data, isDemo }: { data: ProfileData; isDemo?:
       <Story bio={view.bio} story={view.story} />
 
       <Storefront zones={openZones} />
+
+      <div className="max-w-5xl mx-auto px-6 pb-12">
+        <EnquiryForm racerId={view.id} isMinor={view.isMinor} />
+      </div>
 
       {rating && (
         <div className="max-w-5xl mx-auto px-6 pt-4">

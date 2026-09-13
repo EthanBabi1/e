@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { CONFIG } from "@/lib/config";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { LenisProvider } from "@/components/motion/LenisProvider";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -37,7 +39,10 @@ export default function RootLayout({
       <body
         className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased bg-paper text-ink`}
       >
-        {children}
+        <LenisProvider>
+          <SiteHeader />
+          {children}
+        </LenisProvider>
       </body>
     </html>
   );

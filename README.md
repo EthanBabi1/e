@@ -68,12 +68,22 @@ Export a racer's full record any time: `GET /api/export/:racerId/csv` and `/pdf`
 - `/sitemap.xml`, `/robots.txt` — sitemap excludes every noindexed (unclaimed-minor) profile.
 - `/admin/metrics` — funnel dashboard (unauthenticated dev route — see caveat above for `/admin`).
 
+## Accounts, messaging, notifications (Phase 4)
+
+- **Auth**: `/sign-in` — Resend magic link and/or Google OAuth, whichever has credentials configured (`AUTH_RESEND_KEY`, or `AUTH_GOOGLE_ID`+`AUTH_GOOGLE_SECRET`). Neither is set in this environment by default — `/sign-in` says so rather than showing a dead button.
+- **Claiming a profile**: `/claim/[token]` — an adult claims directly; a minor's profile is claimed by a guardian, who declares their relationship and gives separate, plain-language consent before the profile becomes public.
+- **Dashboard**: `/dashboard` — lists the racer profile(s) you manage (your own, or any minor you're the guardian of), with links to edit the story/bio, messages, and notifications.
+- **Messaging**: `/dashboard/messages` — an enquiry from a racer's profile opens a thread; a minor's thread routes to their guardian, never the racer; contact-detail sharing (phone/email/social handles) is blocked with an explanation in any thread involving a minor.
+- **Notifications**: in-app centre at `/dashboard/notifications`, plus email via Resend when `RESEND_API_KEY` is set (skipped with a console warning otherwise — nothing crashes). Financial notifications can only be sent to a resolved guardian/adult user id, never a bare racer id — see `lib/notifications/dispatch.ts`.
+- **Email templates**: React Email, previewable at `/dev/emails` — dev-mode only by design (checks `NODE_ENV`).
+- **Legal pages**: `/terms`, `/privacy`, `/sponsorship-terms`, `/for-parents`, `/verification`, `/rating`, `/fees` — real routes, versioned in the `policy_versions` table, each flagged where it still needs legal review.
+
 ## Full setup (filled in as each phase lands)
 
 - **Database / migrations / seed** — done, Phase 1 (above).
 - **Results ingest** — done, Phase 2 (above).
 - **Public surface** — done, Phase 3 (above).
-- **Auth / accounts** — added in Phase 4.
+- **Auth / accounts / messaging / notifications / legal pages** — done, Phase 4 (above).
 - **Stripe webhook forwarding** — added in Phase 5.
 - **Cron jobs** — added in Phase 5/6.
 - **Deploy** — Vercel; live payment keys are never used (test mode only, everywhere — see `lib/config.ts`, which refuses to boot Stripe with a non-`sk_test_`/`pk_test_` key).

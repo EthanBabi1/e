@@ -2,8 +2,9 @@ import { db } from "@/db/client";
 import {
   users, guardians, guardianRacers, tracks, racers, transponders,
   transponderAssignments, events, raceSessions, results, laps, series, claims,
-  zones, zoneListings,
+  zones, zoneListings, policyVersions,
 } from "@/db/schema";
+import { POLICIES, MINOR_DISPLAY_CONSENT } from "@/lib/legal/policyContent";
 import { CLASSES, FIRST_NAMES, LAST_NAMES } from "./data";
 import { mulberry32, pick, randInt } from "./rng";
 import { inferIsMinor } from "@/lib/minors";
@@ -197,6 +198,11 @@ async function clearAll() {
       claims, claim_invitations, takedown_requests,
       transponder_assignments, transponders,
       guardian_racers, guardians,
+      messages, message_threads, thread_reports, user_blocks,
+      notifications, notification_preferences,
+      policy_acceptances, policy_versions,
+      audit_log, logo_reports,
+      analytics_events,
       racers, track_staff, tracks,
       sessions, accounts, verification_tokens, users
     RESTART IDENTITY CASCADE
@@ -206,6 +212,11 @@ async function clearAll() {
 async function main() {
   console.log("Clearing existing data...");
   await clearAll();
+
+  console.log("Seeding policy versions...");
+  for (const policy of [...POLICIES, MINOR_DISPLAY_CONSENT]) {
+    await db.insert(policyVersions).values({ slug: policy.slug, version: policy.version, bodyMarkdown: policy.body });
+  }
 
   console.log("Creating tracks...");
   const [trackA] = await db
