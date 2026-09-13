@@ -15,3 +15,5 @@ export * from "./policies";
 export * from "./messaging";
 export * from "./notifications";
 export * from "./moderation";
+export * from "./sponsorships";
+export * from "./billing";

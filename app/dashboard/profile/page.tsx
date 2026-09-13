@@ -32,6 +32,9 @@ export default async function ProfileEditPage({ searchParams }: { searchParams: 
         racerId={racer.id}
         initial={{ bio: racer.bio, story: racer.story, seasonGoal: racer.seasonGoal }}
       />
+      <a href={`/api/export/${racer.id}/media-kit`} className="text-sm accent-underline mt-8 inline-block">
+        Download media kit (PDF)
+      </a>
     </main>
   );
 }

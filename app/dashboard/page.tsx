@@ -5,6 +5,7 @@ import { getManagedRacers } from "@/lib/dashboard/getCurrentRacer";
 import { db } from "@/db/client";
 import { notifications } from "@/db/schema";
 import { and, eq, isNull, sql } from "drizzle-orm";
+import { SetupPayoutsButton } from "./SetupPayoutsButton";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +33,18 @@ export default async function DashboardPage() {
         <Link href="/dashboard/results/import" className="rounded-full bg-marble px-4 py-2 text-sm">
           Add results
         </Link>
+        <Link href="/dashboard/zones" className="rounded-full bg-marble px-4 py-2 text-sm">
+          Zones
+        </Link>
+        <Link href="/dashboard/sponsorships" className="rounded-full bg-marble px-4 py-2 text-sm">
+          Sponsorships
+        </Link>
+        <Link href="/dashboard/upgrade" className="rounded-full bg-marble px-4 py-2 text-sm">
+          Pro
+        </Link>
       </div>
+
+      <SetupPayoutsButton />
 
       {managedRacers.length === 0 ? (
         <p className="text-graphite">

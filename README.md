@@ -78,12 +78,25 @@ Export a racer's full record any time: `GET /api/export/:racerId/csv` and `/pdf`
 - **Email templates**: React Email, previewable at `/dev/emails` — dev-mode only by design (checks `NODE_ENV`).
 - **Legal pages**: `/terms`, `/privacy`, `/sponsorship-terms`, `/for-parents`, `/verification`, `/rating`, `/fees` — real routes, versioned in the `policy_versions` table, each flagged where it still needs legal review.
 
+## Money (Phase 5) — test mode only, always
+
+Every dollar amount anywhere in this codebase is Stripe **test mode**. `lib/config.ts` refuses to construct a Stripe client from anything that isn't an `sk_test_`/`pk_test_` key.
+
+- **Zones**: `/dashboard/zones` — set a price (validated against a floor/ceiling — `lib/pricing/zonePricing.ts`), see the platform's suggested range. A minor's listing needs a guardian's approval (`/api/zones/listing/approve`) before it goes public.
+- **Checkout**: `/api/checkout/buy-now` (Stripe Checkout, hosted) for a fixed-price zone; `/api/checkout/bid` + `/api/checkout/bid/setup-intent` for an auction bid (SetupIntent via Checkout in `setup` mode — a card is saved, nothing charged, until the bid wins).
+- **Escrow**: sponsor pays → guardian approves the winner (minors only) → racer/guardian uploads a decal photo → sponsor confirms, or 7 days elapse → funds transfer to the racer's (or guardian's) connected account, minus the platform's take rate. State machine in `lib/sponsorships/escrow.ts`; the full flow is at `/dashboard/sponsorships`.
+- **Payouts**: `/dashboard` → "Set up payouts" starts Stripe Connect Express onboarding. A minor's payout account always belongs to their guardian — there is no code path that creates one naming a minor.
+- **Subscriptions**: `/dashboard/upgrade` shows the live Pro-vs-free savings math against the racer's actual sponsorship volume this season, and is honest when Pro isn't worth it yet.
+- **Withdrawals**: `lib/sponsorships/withdrawal.ts` computes a pro-rata refund or sponsor credit for a mid-term cancellation — wired as a function, not yet exposed in any UI (see `REVIEW.md`).
+- **Cron** (called directly for now; wired to Vercel Cron in Phase 6): `POST /api/cron/escrow-release` and `POST /api/cron/auction-close`, both requiring `Authorization: Bearer $CRON_SECRET`.
+- **Webhook**: `POST /api/stripe/webhook`. For local testing once you have a Stripe test key: `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+
 ## Full setup (filled in as each phase lands)
 
 - **Database / migrations / seed** — done, Phase 1 (above).
 - **Results ingest** — done, Phase 2 (above).
 - **Public surface** — done, Phase 3 (above).
 - **Auth / accounts / messaging / notifications / legal pages** — done, Phase 4 (above).
-- **Stripe webhook forwarding** — added in Phase 5.
-- **Cron jobs** — added in Phase 5/6.
+- **Money (Connect, checkout, escrow, subscriptions)** — done, Phase 5 (above) — but see `REVIEW.md` #21: none of it has touched a live Stripe API call yet.
+- **Cron jobs on an actual schedule** — added in Phase 6 (routes exist now, callable directly).
 - **Deploy** — Vercel; live payment keys are never used (test mode only, everywhere — see `lib/config.ts`, which refuses to boot Stripe with a non-`sk_test_`/`pk_test_` key).

@@ -40,7 +40,13 @@ export async function getProfileDataForRacer(racer: typeof racers.$inferSelect) 
   }
 
   const openZonesRaw = await db
-    .select({ zoneName: zones.name, tier: zones.tier, priceUsd: zoneListings.priceUsd, guardianApprovedAt: zoneListings.guardianApprovedAt })
+    .select({
+      listingId: zoneListings.id,
+      zoneName: zones.name,
+      tier: zones.tier,
+      priceUsd: zoneListings.priceUsd,
+      guardianApprovedAt: zoneListings.guardianApprovedAt,
+    })
     .from(zoneListings)
     .innerJoin(zones, eq(zoneListings.zoneId, zones.id))
     .where(and(eq(zones.racerId, racer.id), eq(zoneListings.isActive, true)));
